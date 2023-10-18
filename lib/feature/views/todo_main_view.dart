@@ -26,7 +26,7 @@ class ToDoMainView extends HookWidget {
           children: [
             //1.캘린더 위젯
             CalendarWidget(
-              toDoPlan: todoPlan.value,
+              toDoPlan: todoPlan,
             ),
             //2. 이벤트 리스트 위젯
             const Expanded(child: EventListWidget()),

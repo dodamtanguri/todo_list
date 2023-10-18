@@ -8,22 +8,17 @@ import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/utils/utils.dart';
 
 class CalendarWidget extends HookWidget {
-  ToDoPlan toDoPlan;
+  ValueNotifier<ToDoPlan> toDoPlan;
   CalendarWidget({required this.toDoPlan, super.key});
 
   @override
   Widget build(BuildContext context) {
     final calendarFormat = useState(CalendarFormat.month);
-    final targetToDoPlan = useState(toDoPlan);
-
-    final today = useState<DateTime>(DateTime.now());
-    final selectedDate = useState<DateTime?>(today.value);
-    
     return TableCalendar(
       locale: 'ko-KR',
       firstDay: kFirstDay,
       lastDay: kLastDay,
-      focusedDay: toDoPlan.today,
+      focusedDay: toDoPlan.value.today,
       calendarFormat: calendarFormat.value,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: const CalendarStyle(
@@ -32,17 +27,11 @@ class CalendarWidget extends HookWidget {
         markersMaxCount: 1,
       ),
       selectedDayPredicate: (day) {
-        return isSameDay(targetToDoPlan.value.selectedDate, day);
+        return isSameDay(toDoPlan.value.selectedDate, day);
       },
       onDaySelected: (selectedDate, today) {
-        print('selectedDate : $selectedDate');
-
-        print('toDoPlan : $toDoPlan');
-        print('useState targetToDoPlan : ${targetToDoPlan.value}');
-
-        if (!isSameDay(targetToDoPlan.value.selectedDate, selectedDate)) {
-          toDoPlan =
-              toDoPlan.copyWith(selectedDate: selectedDate, today: today);
+        if (!isSameDay(toDoPlan.value.selectedDate, selectedDate)) {
+          toDoPlan.value = toDoPlan.value.copyWith(selectedDate: selectedDate);
         }
       },
       onFormatChanged: (format) {
@@ -51,7 +40,7 @@ class CalendarWidget extends HookWidget {
         }
       },
       onPageChanged: (focus) {
-        toDoPlan = toDoPlan.copyWith(today: focus);
+        toDoPlan.value = toDoPlan.value.copyWith(today: focus);
       },
       headerStyle: const HeaderStyle(
         titleCentered: true,
