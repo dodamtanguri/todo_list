@@ -4,12 +4,18 @@ import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
 
+typedef OnClickSubmit = Function(ToDoPlan);
+
 //여기서 todoPlan을 다시 위로 넘겨줘야함.
 class TodoBottomModalWidget extends HookWidget {
+  ToDoPlan toDoPlan;
   TodoBottomModalWidget(
-      {required this.todoPlan, required this.title, super.key});
+      {required this.onClickSubmit,
+      required this.toDoPlan,
+      required this.title,
+      super.key});
   final String title;
-  ToDoPlan todoPlan;
+  final OnClickSubmit onClickSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -45,13 +51,17 @@ class TodoBottomModalWidget extends HookWidget {
               ),
               suffixIcon: GestureDetector(
                 onTap: () {
-                  print('copy 전 todo planv : $todoPlan');
-                  todoPlan = todoPlan.copyWith(list: [
-                    ...todoPlan.list ?? [],
-                    Todo(title: todoController.text)
+                  print('copy 전 todo planv : $toDoPlan.value');
+                  toDoPlan = toDoPlan.copyWith(list: [
+                    ...toDoPlan.list ?? [],
+                    Todo(
+                        title: todoController.text,
+                        actionDate: toDoPlan.selectedDate!)
                   ]);
-                  print('copy 된 todo planv : $todoPlan');
-                  print(todoPlan.list?.first.title);
+
+                  print('copy 된 todo plan : $toDoPlan.value');
+                  print(toDoPlan.list.first.title);
+                  onClickSubmit(toDoPlan);
                   Navigator.of(context).pop();
                 },
                 child: const Icon(Icons.upload_rounded),

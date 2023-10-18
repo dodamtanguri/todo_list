@@ -13,11 +13,15 @@ import 'package:todo_list/feature/widgets/event_list_widget.dart';
 class ToDoMainView extends HookWidget {
   const ToDoMainView({super.key});
 
+  DateTime setToMidnight(DateTime dateTime) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final todoPlan =
-        useState<ToDoPlan>(ToDoPlan(selectedDate: null, today: DateTime.now()));
+    final todoPlan = useState<ToDoPlan>(const ToDoPlan(selectedDate: null));
 
+    print('todoplan 상태 : $todoPlan');
     return Scaffold(
       appBar: const AppBarWidget(title: 'TODOLISTAPP'),
       body: Padding(
@@ -26,8 +30,7 @@ class ToDoMainView extends HookWidget {
           children: [
             //1.캘린더 위젯
             CalendarWidget(
-              toDoPlan: todoPlan,
-            ),
+                onSelectDate: (selectDate) => todoPlan.value = selectDate),
             //2. 이벤트 리스트 위젯
             const Expanded(child: EventListWidget()),
             const EventListItemWidget(),
@@ -36,6 +39,7 @@ class ToDoMainView extends HookWidget {
       ),
       floatingActionButton: EventFloatingWidget(
         toDoPlan: todoPlan.value,
+        onPassToDoPlanList: (value) => {},
       ),
     );
   }

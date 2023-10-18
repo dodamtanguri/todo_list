@@ -21,8 +21,7 @@ ToDoPlan _$ToDoPlanFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ToDoPlan {
   DateTime? get selectedDate => throw _privateConstructorUsedError;
-  DateTime get today => throw _privateConstructorUsedError;
-  List<Todo>? get list => throw _privateConstructorUsedError;
+  List<Todo> get list => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +34,7 @@ abstract class $ToDoPlanCopyWith<$Res> {
   factory $ToDoPlanCopyWith(ToDoPlan value, $Res Function(ToDoPlan) then) =
       _$ToDoPlanCopyWithImpl<$Res, ToDoPlan>;
   @useResult
-  $Res call({DateTime? selectedDate, DateTime today, List<Todo>? list});
+  $Res call({DateTime? selectedDate, List<Todo> list});
 }
 
 /// @nodoc
@@ -52,22 +51,17 @@ class _$ToDoPlanCopyWithImpl<$Res, $Val extends ToDoPlan>
   @override
   $Res call({
     Object? selectedDate = freezed,
-    Object? today = null,
-    Object? list = freezed,
+    Object? list = null,
   }) {
     return _then(_value.copyWith(
       selectedDate: freezed == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      today: null == today
-          ? _value.today
-          : today // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      list: freezed == list
+      list: null == list
           ? _value.list
           : list // ignore: cast_nullable_to_non_nullable
-              as List<Todo>?,
+              as List<Todo>,
     ) as $Val);
   }
 }
@@ -80,7 +74,7 @@ abstract class _$$ToDoPlanImplCopyWith<$Res>
       __$$ToDoPlanImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime? selectedDate, DateTime today, List<Todo>? list});
+  $Res call({DateTime? selectedDate, List<Todo> list});
 }
 
 /// @nodoc
@@ -95,22 +89,17 @@ class __$$ToDoPlanImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? selectedDate = freezed,
-    Object? today = null,
-    Object? list = freezed,
+    Object? list = null,
   }) {
     return _then(_$ToDoPlanImpl(
       selectedDate: freezed == selectedDate
           ? _value.selectedDate
           : selectedDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
-      today: null == today
-          ? _value.today
-          : today // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      list: freezed == list
+      list: null == list
           ? _value._list
           : list // ignore: cast_nullable_to_non_nullable
-              as List<Todo>?,
+              as List<Todo>,
     ));
   }
 }
@@ -119,7 +108,7 @@ class __$$ToDoPlanImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ToDoPlanImpl implements _ToDoPlan {
   const _$ToDoPlanImpl(
-      {required this.selectedDate, required this.today, final List<Todo>? list})
+      {required this.selectedDate, final List<Todo> list = const []})
       : _list = list;
 
   factory _$ToDoPlanImpl.fromJson(Map<String, dynamic> json) =>
@@ -127,21 +116,18 @@ class _$ToDoPlanImpl implements _ToDoPlan {
 
   @override
   final DateTime? selectedDate;
+  final List<Todo> _list;
   @override
-  final DateTime today;
-  final List<Todo>? _list;
-  @override
-  List<Todo>? get list {
-    final value = _list;
-    if (value == null) return null;
+  @JsonKey()
+  List<Todo> get list {
     if (_list is EqualUnmodifiableListView) return _list;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
+    return EqualUnmodifiableListView(_list);
   }
 
   @override
   String toString() {
-    return 'ToDoPlan(selectedDate: $selectedDate, today: $today, list: $list)';
+    return 'ToDoPlan(selectedDate: $selectedDate, list: $list)';
   }
 
   @override
@@ -151,14 +137,13 @@ class _$ToDoPlanImpl implements _ToDoPlan {
             other is _$ToDoPlanImpl &&
             (identical(other.selectedDate, selectedDate) ||
                 other.selectedDate == selectedDate) &&
-            (identical(other.today, today) || other.today == today) &&
             const DeepCollectionEquality().equals(other._list, _list));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, selectedDate, today,
-      const DeepCollectionEquality().hash(_list));
+  int get hashCode => Object.hash(
+      runtimeType, selectedDate, const DeepCollectionEquality().hash(_list));
 
   @JsonKey(ignore: true)
   @override
@@ -177,8 +162,7 @@ class _$ToDoPlanImpl implements _ToDoPlan {
 abstract class _ToDoPlan implements ToDoPlan {
   const factory _ToDoPlan(
       {required final DateTime? selectedDate,
-      required final DateTime today,
-      final List<Todo>? list}) = _$ToDoPlanImpl;
+      final List<Todo> list}) = _$ToDoPlanImpl;
 
   factory _ToDoPlan.fromJson(Map<String, dynamic> json) =
       _$ToDoPlanImpl.fromJson;
@@ -186,9 +170,7 @@ abstract class _ToDoPlan implements ToDoPlan {
   @override
   DateTime? get selectedDate;
   @override
-  DateTime get today;
-  @override
-  List<Todo>? get list;
+  List<Todo> get list;
   @override
   @JsonKey(ignore: true)
   _$$ToDoPlanImplCopyWith<_$ToDoPlanImpl> get copyWith =>

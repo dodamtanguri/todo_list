@@ -6,6 +6,7 @@ part 'todo.g.dart';
 @freezed
 class Todo with _$Todo {
   const factory Todo({
+    required DateTime actionDate,
     required String title,
     @Default(false) bool isCompleted,
   }) = _Todo;
@@ -13,3 +14,15 @@ class Todo with _$Todo {
   factory Todo.fromJson(Map<String, dynamic> json) 
 		=> _$TodoFromJson(json);
 }
+
+
+
+
+
+
+
+
+
+
+
+
