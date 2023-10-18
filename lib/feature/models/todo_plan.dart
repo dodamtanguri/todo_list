@@ -9,7 +9,7 @@ part 'todo_plan.freezed.dart';
 @freezed
 class ToDoPlan with _$ToDoPlan {
   const factory ToDoPlan({
-    required DateTime dateSelected,
+    required DateTime? selectedDate,
     required DateTime today,
     List<Todo>? list,
   }) = _ToDoPlan;

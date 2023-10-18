@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:todo_list/feature/models/todo.dart';
+import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
 
+//여기서 todoPlan을 다시 위로 넘겨줘야함.
 class TodoBottomModalWidget extends HookWidget {
-  const TodoBottomModalWidget({required this.title, super.key});
+  TodoBottomModalWidget(
+      {required this.todoPlan, required this.title, super.key});
   final String title;
+  ToDoPlan todoPlan;
 
   @override
   Widget build(BuildContext context) {
     final todoController = useTextEditingController(text: '');
-
 
     final size = MediaQuery.of(context).size;
     return Container(
@@ -41,7 +45,13 @@ class TodoBottomModalWidget extends HookWidget {
               ),
               suffixIcon: GestureDetector(
                 onTap: () {
-                  print(todoController.text);
+                  print('copy 전 todo planv : $todoPlan');
+                  todoPlan = todoPlan.copyWith(list: [
+                    ...todoPlan.list ?? [],
+                    Todo(title: todoController.text)
+                  ]);
+                  print('copy 된 todo planv : $todoPlan');
+                  print(todoPlan.list?.first.title);
                   Navigator.of(context).pop();
                 },
                 child: const Icon(Icons.upload_rounded),

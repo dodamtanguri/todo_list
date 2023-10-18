@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:todo_list/feature/views/calendar_test_view.dart';
 import 'package:todo_list/feature/views/claendar_test_event_view.dart';
-import 'package:todo_list/feature/views/main_view.dart';
+import 'package:todo_list/feature/views/todo_main_view.dart';
 
 void main() async {
   await initializeDateFormatting();
@@ -20,7 +20,7 @@ class TodoListApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         // useMaterial3: true,
       ),
-      home: const TableEventsExample(),
+      home: ToDoMainView(),
     );
   }
 }

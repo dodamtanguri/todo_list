@@ -20,7 +20,7 @@ ToDoPlan _$ToDoPlanFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ToDoPlan {
-  DateTime get dateSelected => throw _privateConstructorUsedError;
+  DateTime? get selectedDate => throw _privateConstructorUsedError;
   DateTime get today => throw _privateConstructorUsedError;
   List<Todo>? get list => throw _privateConstructorUsedError;
 
@@ -35,7 +35,7 @@ abstract class $ToDoPlanCopyWith<$Res> {
   factory $ToDoPlanCopyWith(ToDoPlan value, $Res Function(ToDoPlan) then) =
       _$ToDoPlanCopyWithImpl<$Res, ToDoPlan>;
   @useResult
-  $Res call({DateTime dateSelected, DateTime today, List<Todo>? list});
+  $Res call({DateTime? selectedDate, DateTime today, List<Todo>? list});
 }
 
 /// @nodoc
@@ -51,15 +51,15 @@ class _$ToDoPlanCopyWithImpl<$Res, $Val extends ToDoPlan>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? dateSelected = null,
+    Object? selectedDate = freezed,
     Object? today = null,
     Object? list = freezed,
   }) {
     return _then(_value.copyWith(
-      dateSelected: null == dateSelected
-          ? _value.dateSelected
-          : dateSelected // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      selectedDate: freezed == selectedDate
+          ? _value.selectedDate
+          : selectedDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       today: null == today
           ? _value.today
           : today // ignore: cast_nullable_to_non_nullable
@@ -80,7 +80,7 @@ abstract class _$$ToDoPlanImplCopyWith<$Res>
       __$$ToDoPlanImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime dateSelected, DateTime today, List<Todo>? list});
+  $Res call({DateTime? selectedDate, DateTime today, List<Todo>? list});
 }
 
 /// @nodoc
@@ -94,15 +94,15 @@ class __$$ToDoPlanImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? dateSelected = null,
+    Object? selectedDate = freezed,
     Object? today = null,
     Object? list = freezed,
   }) {
     return _then(_$ToDoPlanImpl(
-      dateSelected: null == dateSelected
-          ? _value.dateSelected
-          : dateSelected // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+      selectedDate: freezed == selectedDate
+          ? _value.selectedDate
+          : selectedDate // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       today: null == today
           ? _value.today
           : today // ignore: cast_nullable_to_non_nullable
@@ -119,14 +119,14 @@ class __$$ToDoPlanImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ToDoPlanImpl implements _ToDoPlan {
   const _$ToDoPlanImpl(
-      {required this.dateSelected, required this.today, final List<Todo>? list})
+      {required this.selectedDate, required this.today, final List<Todo>? list})
       : _list = list;
 
   factory _$ToDoPlanImpl.fromJson(Map<String, dynamic> json) =>
       _$$ToDoPlanImplFromJson(json);
 
   @override
-  final DateTime dateSelected;
+  final DateTime? selectedDate;
   @override
   final DateTime today;
   final List<Todo>? _list;
@@ -141,7 +141,7 @@ class _$ToDoPlanImpl implements _ToDoPlan {
 
   @override
   String toString() {
-    return 'ToDoPlan(dateSelected: $dateSelected, today: $today, list: $list)';
+    return 'ToDoPlan(selectedDate: $selectedDate, today: $today, list: $list)';
   }
 
   @override
@@ -149,15 +149,15 @@ class _$ToDoPlanImpl implements _ToDoPlan {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ToDoPlanImpl &&
-            (identical(other.dateSelected, dateSelected) ||
-                other.dateSelected == dateSelected) &&
+            (identical(other.selectedDate, selectedDate) ||
+                other.selectedDate == selectedDate) &&
             (identical(other.today, today) || other.today == today) &&
             const DeepCollectionEquality().equals(other._list, _list));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, dateSelected, today,
+  int get hashCode => Object.hash(runtimeType, selectedDate, today,
       const DeepCollectionEquality().hash(_list));
 
   @JsonKey(ignore: true)
@@ -176,7 +176,7 @@ class _$ToDoPlanImpl implements _ToDoPlan {
 
 abstract class _ToDoPlan implements ToDoPlan {
   const factory _ToDoPlan(
-      {required final DateTime dateSelected,
+      {required final DateTime? selectedDate,
       required final DateTime today,
       final List<Todo>? list}) = _$ToDoPlanImpl;
 
@@ -184,7 +184,7 @@ abstract class _ToDoPlan implements ToDoPlan {
       _$ToDoPlanImpl.fromJson;
 
   @override
-  DateTime get dateSelected;
+  DateTime? get selectedDate;
   @override
   DateTime get today;
   @override

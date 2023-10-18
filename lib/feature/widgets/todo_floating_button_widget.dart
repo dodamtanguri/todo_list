@@ -6,8 +6,10 @@ typedef OnClickEventButton = VoidCallback;
 class ToDoFloatingButtonWidget extends HookWidget {
   const ToDoFloatingButtonWidget(
       {required this.icon, required this.onClickEventButton, super.key});
+
   final OnClickEventButton onClickEventButton;
   final IconData icon;
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(

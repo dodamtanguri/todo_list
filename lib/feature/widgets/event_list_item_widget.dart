@@ -6,7 +6,7 @@ class EventListItemWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
         
       ],
