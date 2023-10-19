@@ -20,7 +20,8 @@ ToDoPlan _$ToDoPlanFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ToDoPlan {
-  DateTime? get selectedDate => throw _privateConstructorUsedError;
+  DateTime? get selectedDate =>
+      throw _privateConstructorUsedError; //todos 로 이름 변경
   List<Todo> get list => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -116,7 +117,9 @@ class _$ToDoPlanImpl implements _ToDoPlan {
 
   @override
   final DateTime? selectedDate;
+//todos 로 이름 변경
   final List<Todo> _list;
+//todos 로 이름 변경
   @override
   @JsonKey()
   List<Todo> get list {
@@ -169,7 +172,7 @@ abstract class _ToDoPlan implements ToDoPlan {
 
   @override
   DateTime? get selectedDate;
-  @override
+  @override //todos 로 이름 변경
   List<Todo> get list;
   @override
   @JsonKey(ignore: true)

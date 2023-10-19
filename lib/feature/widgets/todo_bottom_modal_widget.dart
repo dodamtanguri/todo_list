@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
+import 'dart:math' as math;
 
 typedef OnClickSubmit = Function(ToDoPlan);
 
@@ -15,6 +16,11 @@ class TodoBottomModalWidget extends HookWidget {
       super.key});
   final String title;
   final OnClickSubmit onClickSubmit;
+
+  int getMaxId(List<Todo> todos) {
+    if (todos.isEmpty) return 0;
+    return todos.map((todo) => todo.id).reduce(math.max);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +40,6 @@ class TodoBottomModalWidget extends HookWidget {
           child: TextField(
             controller: todoController,
             keyboardType: TextInputType.text,
-            onEditingComplete: () {},
             autocorrect: false,
             decoration: InputDecoration(
               hintText: title,
@@ -50,14 +55,16 @@ class TodoBottomModalWidget extends HookWidget {
               ),
               suffixIcon: GestureDetector(
                 onTap: () {
+                  final newId = getMaxId(toDoPlan.list ?? []) + 1;
                   final updateToDoPlan = toDoPlan.copyWith(list: [
                     ...toDoPlan.list ?? [],
                     Todo(
+                        id: newId,
                         title: todoController.text,
                         actionDate: toDoPlan.selectedDate ?? DateTime.now())
                   ]);
-                  onClickSubmit(updateToDoPlan);
-                  Navigator.of(context).pop();
+                
+                  Navigator.of(context).pop(updateToDoPlan);
                 },
                 child: const Icon(Icons.upload_rounded),
               ),

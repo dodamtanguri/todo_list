@@ -19,16 +19,22 @@ class ToDoMainView extends HookWidget {
   Widget build(BuildContext context) {
     final todoPlan = useState<ToDoPlan>(const ToDoPlan(selectedDate: null));
 
-    bool isSelectedTodoTest(Todo todo) =>
-      todo.actionDate.year == todoPlan.value.selectedDate?.year && todo.actionDate.month == todoPlan.value.selectedDate?.month && todo.actionDate.day == todoPlan.value.selectedDate?.day;
-      
-
+    bool isSelectedTodoTest(Todo todo) {
+      if (todoPlan.value.selectedDate == null) return false;
+      return todo.actionDate.year == todoPlan.value.selectedDate?.year &&
+          todo.actionDate.month == todoPlan.value.selectedDate?.month &&
+          todo.actionDate.day == todoPlan.value.selectedDate?.day;
+    }
 
     bool isRemovedTodoTest(Todo todo) => true;
 
     final todos = todoPlan.value.list
-                    .where((element) => isRemovedTodoTest(element))                   
-                    .toList();
+        .where((element) => isRemovedTodoTest(element))
+        .toList();
+
+    final filteredTodos = todoPlan.value.list
+        .where((element) => isSelectedTodoTest(element))
+        .toList();
 
     return Scaffold(
       appBar: const AppBarWidget(title: 'TODOLISTAPP'),
@@ -37,22 +43,39 @@ class ToDoMainView extends HookWidget {
         child: Column(
           children: [
             //1.캘린더 위젯
-            CalendarWidget(
-                onSelectDate: (selectDate) => todoPlan.value = selectDate),
+            CalendarWidget(onSelectDate: (selectDate) {
+              print('selectedDate : $selectDate');
+              todoPlan.value = todoPlan.value
+                  .copyWith(selectedDate: selectDate.selectedDate);
+            }),
+
             //2. 이벤트 리스트 위젯
             Expanded(
               child: EventListWidget(
                 todos: todoPlan.value.list
                     .where((element) => isSelectedTodoTest(element))
                     .toList(),
+                onTodoUpdated: (updatedTodo) {
+                  final updatedList = List<Todo>.from(todoPlan.value.list);
+                  int index = updatedList
+                      .indexWhere((todo) => todo.id == updatedTodo.id);
+                  if (index != -1) {
+                    updatedList[index] = updatedTodo;
+                  }
+                  print('updatedList : $updatedList');
+                  print('updatedTodo : $updatedTodo');
+                  todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+                },
               ),
-            )
+            ),
           ],
         ),
       ),
       floatingActionButton: EventFloatingWidget(
         toDoPlan: todoPlan.value,
-        onPassToDoPlanList: (value) => {todoPlan.value = value},
+        onPassToDoPlanList: (value) {
+          todoPlan.value = value;
+        },
       ),
     );
   }

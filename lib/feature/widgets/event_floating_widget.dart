@@ -18,17 +18,26 @@ class EventFloatingWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    void onClickShowTextModal() {
-      showModalBottomSheet(
+    void onClickShowTextModal() async {
+      final returnedToDoPlan = await showModalBottomSheet<ToDoPlan>(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) => TodoBottomModalWidget(
           title: 'Todo추가하기',
           toDoPlan: toDoPlan,
-          onClickSubmit: (p0) => {onPassToDoPlanList(p0)},
+          onClickSubmit: (updatedPlan) {
+            
+
+            Navigator.of(context).pop(updatedPlan);
+          },
         ),
       );
+
+      if (returnedToDoPlan != null) {
+        
+        onPassToDoPlanList(returnedToDoPlan);
+      }
     }
 
     return Column(
