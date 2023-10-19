@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
@@ -7,7 +5,6 @@ import 'package:todo_list/feature/ui/styles/sizes.dart';
 import 'package:todo_list/feature/widgets/app_bar_widget.dart';
 import 'package:todo_list/feature/widgets/calendar_widget.dart';
 import 'package:todo_list/feature/widgets/event_floating_widget.dart';
-import 'package:todo_list/feature/widgets/event_list_item_widget.dart';
 import 'package:todo_list/feature/widgets/event_list_widget.dart';
 
 class ToDoMainView extends HookWidget {
@@ -20,8 +17,6 @@ class ToDoMainView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final todoPlan = useState<ToDoPlan>(const ToDoPlan(selectedDate: null));
-
-    print('todoplan 상태 : $todoPlan');
     return Scaffold(
       appBar: const AppBarWidget(title: 'TODOLISTAPP'),
       body: Padding(
@@ -32,14 +27,13 @@ class ToDoMainView extends HookWidget {
             CalendarWidget(
                 onSelectDate: (selectDate) => todoPlan.value = selectDate),
             //2. 이벤트 리스트 위젯
-            const Expanded(child: EventListWidget()),
-            const EventListItemWidget(),
+            Expanded(child: EventListWidget(todoPlan: todoPlan.value)),
           ],
         ),
       ),
       floatingActionButton: EventFloatingWidget(
         toDoPlan: todoPlan.value,
-        onPassToDoPlanList: (value) => {},
+        onPassToDoPlanList: (value) => {todoPlan.value = value},
       ),
     );
   }

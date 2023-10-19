@@ -8,8 +8,8 @@ typedef OnClickSubmit = Function(ToDoPlan);
 
 //여기서 todoPlan을 다시 위로 넘겨줘야함.
 class TodoBottomModalWidget extends HookWidget {
-  ToDoPlan toDoPlan;
-  TodoBottomModalWidget(
+  final ToDoPlan toDoPlan;
+  const TodoBottomModalWidget(
       {required this.onClickSubmit,
       required this.toDoPlan,
       required this.title,
@@ -52,16 +52,16 @@ class TodoBottomModalWidget extends HookWidget {
               suffixIcon: GestureDetector(
                 onTap: () {
                   print('copy 전 todo planv : $toDoPlan.value');
-                  toDoPlan = toDoPlan.copyWith(list: [
+                  final updateToDoPlan = toDoPlan.copyWith(list: [
                     ...toDoPlan.list ?? [],
                     Todo(
                         title: todoController.text,
-                        actionDate: toDoPlan.selectedDate!)
+                        actionDate: toDoPlan.selectedDate ?? DateTime.now())
                   ]);
 
-                  print('copy 된 todo plan : $toDoPlan.value');
-                  print(toDoPlan.list.first.title);
-                  onClickSubmit(toDoPlan);
+                  print('copy 된 todo plan : $updateToDoPlan.value');
+                  print(updateToDoPlan.list.first.title);
+                  onClickSubmit(updateToDoPlan);
                   Navigator.of(context).pop();
                 },
                 child: const Icon(Icons.upload_rounded),

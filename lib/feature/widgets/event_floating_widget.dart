@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
@@ -10,10 +8,10 @@ import 'package:todo_list/feature/widgets/todo_floating_button_widget.dart';
 typedef OnPassToDoPlanList = Function(ToDoPlan);
 
 class EventFloatingWidget extends HookWidget {
-  ToDoPlan toDoPlan;
+  final ToDoPlan toDoPlan;
   final OnPassToDoPlanList onPassToDoPlanList;
 
-  EventFloatingWidget(
+  const EventFloatingWidget(
       {required this.onPassToDoPlanList, required this.toDoPlan, super.key});
 
   void onClickEventEdit() {}
