@@ -19,7 +19,10 @@ class ToDoMainView extends HookWidget {
   Widget build(BuildContext context) {
     final todoPlan = useState<ToDoPlan>(const ToDoPlan(selectedDate: null));
 
-    bool isSelectedTodoTest(Todo todo) => true;
+    bool isSelectedTodoTest(Todo todo) =>
+      todo.actionDate.year == todoPlan.value.selectedDate?.year && todo.actionDate.month == todoPlan.value.selectedDate?.month && todo.actionDate.day == todoPlan.value.selectedDate?.day;
+      
+
 
     bool isRemovedTodoTest(Todo todo) => true;
 

@@ -6,7 +6,6 @@ import 'package:todo_list/feature/ui/styles/sizes.dart';
 
 typedef OnClickSubmit = Function(ToDoPlan);
 
-//여기서 todoPlan을 다시 위로 넘겨줘야함.
 class TodoBottomModalWidget extends HookWidget {
   final ToDoPlan toDoPlan;
   const TodoBottomModalWidget(
@@ -51,16 +50,12 @@ class TodoBottomModalWidget extends HookWidget {
               ),
               suffixIcon: GestureDetector(
                 onTap: () {
-                  print('copy 전 todo planv : $toDoPlan.value');
                   final updateToDoPlan = toDoPlan.copyWith(list: [
                     ...toDoPlan.list ?? [],
                     Todo(
                         title: todoController.text,
                         actionDate: toDoPlan.selectedDate ?? DateTime.now())
                   ]);
-
-                  print('copy 된 todo plan : $updateToDoPlan.value');
-                  print(updateToDoPlan.list.first.title);
                   onClickSubmit(updateToDoPlan);
                   Navigator.of(context).pop();
                 },
