@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
-import 'package:todo_list/feature/ui/styles/colors.dart';
 import 'package:todo_list/feature/widgets/event_list_item_widget.dart';
 
 class EventListWidget extends StatelessWidget {

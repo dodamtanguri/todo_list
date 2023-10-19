@@ -1,19 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo.dart';
+import 'package:todo_list/feature/widgets/todo_dialog_widget.dart';
 
-class EventListItemWidget extends StatelessWidget {
+typedef OnClickTodoStateButton = Function(Todo);
+
+class EventListItemWidget extends HookWidget {
   final Todo todo;
 
   const EventListItemWidget({super.key, required this.todo});
 
   @override
   Widget build(BuildContext context) {
+    final showDialogTrigger = useState<bool>(false);
+    final updateTodo = useState<Todo>(todo);
+
+    useEffect(() {
+      if (showDialogTrigger.value) {
+        showDialog(
+          context: context,
+          builder: (context) => ToDoDialogWidget(
+            todo: updateTodo.value,
+          ),
+        );
+      }
+      return null;
+    }, [showDialogTrigger.value]);
+
     return ListTile(
       title: Text(todo.title),
-      trailing: Icon(
-        todo.isCompleted ? Icons.check_circle : Icons.cancel,
-        color: todo.isCompleted ? Colors.green : Colors.red,
+      trailing: GestureDetector(
+        onTap: () => showDialogTrigger.value = true,
+        child: Icon(
+          todo.isCompleted ? Icons.check_circle : Icons.cancel,
+          color: todo.isCompleted ? Colors.green : Colors.red,
+        ),
       ),
     );
   }
