@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/feature/models/todo_plan.dart';
+import 'package:todo_list/feature/models/todo.dart';
+
 import 'package:todo_list/feature/widgets/event_list_item_widget.dart';
 
 class EventListWidget extends StatelessWidget {
-  final ToDoPlan todoPlan;
+  final List<Todo> todos;
 
-  const EventListWidget({super.key, required this.todoPlan});
+  const EventListWidget({super.key, required this.todos});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: todoPlan.list.length,
+      itemCount: todos.length,
       itemBuilder: (context, index) {
-        return EventListItemWidget(todo: todoPlan.list[index]);
+        return EventListItemWidget(todo: todos[index]);
       },
     );
   }

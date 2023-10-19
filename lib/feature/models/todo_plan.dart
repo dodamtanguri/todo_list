@@ -11,6 +11,7 @@ part 'todo_plan.freezed.dart';
 class ToDoPlan with _$ToDoPlan {
   const factory ToDoPlan({
     required DateTime? selectedDate,
+    //todos 로 이름 변경 
     @Default([]) List<Todo> list,
   }) = _ToDoPlan;
 

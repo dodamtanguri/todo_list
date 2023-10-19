@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
 import 'package:todo_list/feature/widgets/app_bar_widget.dart';
@@ -17,6 +18,15 @@ class ToDoMainView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final todoPlan = useState<ToDoPlan>(const ToDoPlan(selectedDate: null));
+
+    bool isSelectedTodoTest(Todo todo) => true;
+
+    bool isRemovedTodoTest(Todo todo) => true;
+
+    final todos = todoPlan.value.list
+                    .where((element) => isRemovedTodoTest(element))                   
+                    .toList();
+
     return Scaffold(
       appBar: const AppBarWidget(title: 'TODOLISTAPP'),
       body: Padding(
@@ -27,7 +37,13 @@ class ToDoMainView extends HookWidget {
             CalendarWidget(
                 onSelectDate: (selectDate) => todoPlan.value = selectDate),
             //2. 이벤트 리스트 위젯
-            Expanded(child: EventListWidget(todoPlan: todoPlan.value)),
+            Expanded(
+              child: EventListWidget(
+                todos: todoPlan.value.list
+                    .where((element) => isSelectedTodoTest(element))
+                    .toList(),
+              ),
+            )
           ],
         ),
       ),

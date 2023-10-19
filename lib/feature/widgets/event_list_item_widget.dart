@@ -12,28 +12,19 @@ class EventListItemWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final showDialogTrigger = useState<bool>(false);
     final updateTodo = useState<Todo>(todo);
-
-    useEffect(() {
-      if (showDialogTrigger.value) {
-        showDialog(
-          context: context,
-          builder: (context) => ToDoDialogWidget(
-            todo: updateTodo.value,
-          ),
-        );
-      }
-      return null;
-    }, [showDialogTrigger.value]);
-
     return ListTile(
       title: Text(todo.title),
       trailing: GestureDetector(
-        onTap: () => showDialogTrigger.value = true,
+        onTap: () async {
+          DialogResult? result =
+              await ToDoDialogWidget.show(context, message: '변경하시겠습니까?');
+          updateTodo.value =
+              updateTodo.value.copyWith(isCompleted: result!.value);
+        },
         child: Icon(
-          todo.isCompleted ? Icons.check_circle : Icons.cancel,
-          color: todo.isCompleted ? Colors.green : Colors.red,
+          updateTodo.value.isCompleted ? Icons.check_circle : Icons.cancel,
+          color: updateTodo.value.isCompleted ? Colors.green : Colors.red,
         ),
       ),
     );
