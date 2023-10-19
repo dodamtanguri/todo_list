@@ -27,15 +27,12 @@ class EventFloatingWidget extends HookWidget {
           title: 'Todo추가하기',
           toDoPlan: toDoPlan,
           onClickSubmit: (updatedPlan) {
-            
-
             Navigator.of(context).pop(updatedPlan);
           },
         ),
       );
 
       if (returnedToDoPlan != null) {
-        
         onPassToDoPlanList(returnedToDoPlan);
       }
     }
@@ -47,6 +44,7 @@ class EventFloatingWidget extends HookWidget {
             icon: Icons.edit_outlined,
             onClickEventButton: onClickShowTextModal),
         PlgMargins.v16,
+        
       ],
     );
   }

@@ -44,7 +44,6 @@ class ToDoMainView extends HookWidget {
           children: [
             //1.캘린더 위젯
             CalendarWidget(onSelectDate: (selectDate) {
-              print('selectedDate : $selectDate');
               todoPlan.value = todoPlan.value
                   .copyWith(selectedDate: selectDate.selectedDate);
             }),
@@ -62,8 +61,17 @@ class ToDoMainView extends HookWidget {
                   if (index != -1) {
                     updatedList[index] = updatedTodo;
                   }
-                  print('updatedList : $updatedList');
-                  print('updatedTodo : $updatedTodo');
+                  todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+                },
+                onDelete: (todoId) {
+                  final updatedList = List<Todo>.from(todoPlan.value.list);
+                  // 삭제 전 리스트 출력
+                  print('Before deletion: $updatedList');
+
+                  updatedList.removeWhere((todo) => todo.id == todoId);
+
+                  // 삭제 후 리스트 출력
+                  print('After deletion: $updatedList');
                   todoPlan.value = todoPlan.value.copyWith(list: updatedList);
                 },
               ),
