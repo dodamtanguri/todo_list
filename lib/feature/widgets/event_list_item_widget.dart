@@ -14,7 +14,12 @@ class EventListItemWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
    
-    final updateTodo = useState<Todo>(todo);
+//     final updateTodo = useState<Todo>(todo);
+//     print(updateTodo);
+
+//     useEffect(() {
+//   updateTodo.value = todo;
+// }, [todo]);
     
     return ListTile(
       title: Text(todo.title),
@@ -22,13 +27,13 @@ class EventListItemWidget extends HookWidget {
         onTap: () async {
           DialogResult? result =
               await ToDoDialogWidget.show(context, message: '변경하시겠습니까?');
-          updateTodo.value =
-              updateTodo.value.copyWith(isCompleted: result!.value);
-          onTodoUpdated(updateTodo.value);
+          Todo updatedTodo = 
+              todo.copyWith(isCompleted: result!.value);
+          onTodoUpdated(updatedTodo);
         },
         child: Icon(
-          updateTodo.value.isCompleted ? Icons.check_circle : Icons.cancel,
-          color: updateTodo.value.isCompleted ? Colors.green : Colors.red,
+          todo.isCompleted ? Icons.check_circle : Icons.cancel,
+          color: todo.isCompleted ? Colors.green : Colors.red,
         ),
       ),
     );
