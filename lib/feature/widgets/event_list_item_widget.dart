@@ -32,16 +32,23 @@ class EventListItemWidget extends HookWidget {
         child: const Icon(Icons.delete, color: Colors.white),
       ),
       child: ListTile(
-        title: Text(todo.title),
+        title: GestureDetector(
+            onTap: () {
+              //TODO bottom modal 띄우기
+            },
+            child: Text(todo.title)),
         trailing: GestureDetector(
           onTap: () async {
-            DialogResult? result =
-                await ToDoDialogWidget.show(context, message: '변경하시겠습니까?');
-            Todo updatedTodo = todo.copyWith(isCompleted: result!.value);
+            DialogResult? result = await ToDoDialogWidget.show(context,
+                message: '변경하시겠습니까?',
+                positiveLabel: '완료',
+                negativeLabel: '미완료');
+            Todo updatedTodo =
+                todo.copyWith(isCompleted: result?.value ?? todo.isCompleted);
             onTodoUpdated(updatedTodo);
           },
           child: Icon(
-            todo.isCompleted ? Icons.check_circle : Icons.cancel,
+            todo.isCompleted ? Icons.circle_outlined : Icons.close,
             color: todo.isCompleted ? Colors.green : Colors.red,
           ),
         ),

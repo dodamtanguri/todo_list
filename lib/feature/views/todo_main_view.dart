@@ -25,28 +25,36 @@ class ToDoMainView extends HookWidget {
           todo.actionDate.month == todoPlan.value.selectedDate?.month &&
           todo.actionDate.day == todoPlan.value.selectedDate?.day;
     }
+    //todo 상태 변경 
+    void handleTodoUpdate(Todo updatedTodo) {
+      final updatedList = List<Todo>.from(todoPlan.value.list);
+      int todoId = updatedList.indexWhere((todo) => todo.id == updatedTodo.id);
+      if (todoId != -1) {
+        updatedList[todoId] = updatedTodo;
+      }
+      todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+    }
 
-    bool isRemovedTodoTest(Todo todo) => true;
-
-    final todos = todoPlan.value.list
-        .where((element) => isRemovedTodoTest(element))
-        .toList();
-
-    final filteredTodos = todoPlan.value.list
-        .where((element) => isSelectedTodoTest(element))
-        .toList();
+    void handleToDoDelete(int todoId) {
+      final updatedList = List<Todo>.from(todoPlan.value.list);
+      updatedList.removeWhere((todo) => todo.id == todoId);
+      todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+    }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const AppBarWidget(title: 'TODOLISTAPP'),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: PlgSizes.m20),
         child: Column(
           children: [
             //1.캘린더 위젯
-            CalendarWidget(onSelectDate: (selectDate) {
-              todoPlan.value = todoPlan.value
-                  .copyWith(selectedDate: selectDate.selectedDate);
-            }),
+            CalendarWidget(
+              onSelectDate: (selectDate) {
+                todoPlan.value = todoPlan.value
+                    .copyWith(selectedDate: selectDate.selectedDate);
+              },
+            ),
 
             //2. 이벤트 리스트 위젯
             Expanded(
@@ -54,26 +62,8 @@ class ToDoMainView extends HookWidget {
                 todos: todoPlan.value.list
                     .where((element) => isSelectedTodoTest(element))
                     .toList(),
-                onTodoUpdated: (updatedTodo) {
-                  final updatedList = List<Todo>.from(todoPlan.value.list);
-                  int index = updatedList
-                      .indexWhere((todo) => todo.id == updatedTodo.id);
-                  if (index != -1) {
-                    updatedList[index] = updatedTodo;
-                  }
-                  todoPlan.value = todoPlan.value.copyWith(list: updatedList);
-                },
-                onDelete: (todoId) {
-                  final updatedList = List<Todo>.from(todoPlan.value.list);
-                  // 삭제 전 리스트 출력
-                  print('Before deletion: $updatedList');
-
-                  updatedList.removeWhere((todo) => todo.id == todoId);
-
-                  // 삭제 후 리스트 출력
-                  print('After deletion: $updatedList');
-                  todoPlan.value = todoPlan.value.copyWith(list: updatedList);
-                },
+                onTodoUpdated: (updatedTodo) => handleTodoUpdate(updatedTodo),
+                onDelete: (todoId) => handleToDoDelete(todoId),
               ),
             ),
           ],

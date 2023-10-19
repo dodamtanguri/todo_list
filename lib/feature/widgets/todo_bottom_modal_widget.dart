@@ -55,15 +55,15 @@ class TodoBottomModalWidget extends HookWidget {
               ),
               suffixIcon: GestureDetector(
                 onTap: () {
-                  final newId = getMaxId(toDoPlan.list ?? []) + 1;
+                  final newId = getMaxId(toDoPlan.list) + 1;
                   final updateToDoPlan = toDoPlan.copyWith(list: [
-                    ...toDoPlan.list ?? [],
+                    ...toDoPlan.list,
                     Todo(
                         id: newId,
                         title: todoController.text,
                         actionDate: toDoPlan.selectedDate ?? DateTime.now())
                   ]);
-                
+
                   Navigator.of(context).pop(updateToDoPlan);
                 },
                 child: const Icon(Icons.upload_rounded),

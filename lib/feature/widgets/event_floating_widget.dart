@@ -16,6 +16,7 @@ class EventFloatingWidget extends HookWidget {
 
   void onClickEventEdit() {}
 
+
   @override
   Widget build(BuildContext context) {
     void onClickShowTextModal() async {

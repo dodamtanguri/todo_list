@@ -40,7 +40,6 @@ class CalendarWidget extends HookWidget {
       selectedDayPredicate: (day) {
         return isSameDay(selectToDoDate.value.selectedDate, day);
       },
-      //1.여기서 부모 위젯으로 넘겨주는 eventhandler가 필요함.
       onDaySelected: (selectedDate, today) {
         if (!isSameDay(selectToDoDate.value.selectedDate, selectedDate)) {
           selectToDoDate.value =
@@ -53,9 +52,6 @@ class CalendarWidget extends HookWidget {
           calendarFormat.value = format;
         }
       },
-      // onPageChanged: (focus) {
-      //   today = focus;
-      // },
       headerStyle: const HeaderStyle(
         titleCentered: true,
         formatButtonVisible: false,

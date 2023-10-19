@@ -28,7 +28,6 @@ class EventListWidget extends StatelessWidget {
             onTodoUpdated(updatedTodo);
           },
           onDelete: (todoId) {
-            print('eventList widget : $todoId');
             onDelete(todoId); // 항목의 인덱스를 전달
           },
         );

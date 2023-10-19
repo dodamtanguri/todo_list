@@ -14,8 +14,8 @@ class ToDoFloatingButtonWidget extends HookWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onClickEventButton,
-      focusColor: Colors.amber,
-      child: Icon(icon),
+      backgroundColor: Colors.white,
+      child: Icon(icon, color: Colors.black,),
     );
   }
 }
