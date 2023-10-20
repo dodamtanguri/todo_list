@@ -25,7 +25,8 @@ class ToDoMainView extends HookWidget {
           todo.actionDate.month == todoPlan.value.selectedDate?.month &&
           todo.actionDate.day == todoPlan.value.selectedDate?.day;
     }
-    //todo 상태 변경 
+
+    //todo 상태 변경
     void handleTodoUpdate(Todo updatedTodo) {
       final updatedList = List<Todo>.from(todoPlan.value.list);
       int todoId = updatedList.indexWhere((todo) => todo.id == updatedTodo.id);
@@ -50,12 +51,10 @@ class ToDoMainView extends HookWidget {
           children: [
             //1.캘린더 위젯
             CalendarWidget(
-              onSelectDate: (selectDate) {
-                todoPlan.value = todoPlan.value
-                    .copyWith(selectedDate: selectDate.selectedDate);
-              },
-            ),
-
+                (todoDate) => todoPlan.value =
+                    todoPlan.value.copyWith(selectedDate: todoDate),
+                todoDate: todoPlan.value.selectedDate,
+                isTodoExist: todoPlan.value.list.isNotEmpty),
             //2. 이벤트 리스트 위젯
             Expanded(
               child: EventListWidget(

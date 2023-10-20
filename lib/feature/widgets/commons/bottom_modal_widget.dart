@@ -7,9 +7,9 @@ import 'dart:math' as math;
 
 typedef OnClickSubmit = Function(ToDoPlan);
 
-class TodoBottomModalWidget extends HookWidget {
+class BottomModalWidget extends HookWidget {
   final ToDoPlan toDoPlan;
-  const TodoBottomModalWidget(
+  const BottomModalWidget(
       {required this.onClickSubmit,
       required this.toDoPlan,
       required this.title,

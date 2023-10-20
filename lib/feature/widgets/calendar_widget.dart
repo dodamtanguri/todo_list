@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/utils/utils.dart';
 
-typedef OnSelectDate = Function(ToDoPlan);
+typedef OnClickDate = Function(DateTime updatedTodo);
 
 class CalendarWidget extends HookWidget {
-  // ToDoPlan toDoPlan;
-  const CalendarWidget({required this.onSelectDate, super.key});
+  const CalendarWidget(this.onClickDate,
+      {required this.todoDate, required this.isTodoExist, super.key});
 
-  final OnSelectDate onSelectDate;
+  final OnClickDate onClickDate;
+  final DateTime? todoDate;
+  final bool isTodoExist;
 
   DateTime setToMidnight(DateTime dateTime) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
@@ -18,39 +19,48 @@ class CalendarWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final selectedDate = useState(todoDate);
+
     final calendarFormat = useState(CalendarFormat.month);
 
-    final selectToDoDate =
-        useState<ToDoPlan>(const ToDoPlan(selectedDate: null));
-
-    var today = setToMidnight(DateTime.now());
+    var today = useState(setToMidnight(DateTime.now()));
 
     return TableCalendar(
       locale: 'ko-KR',
       firstDay: kFirstDay,
       lastDay: kLastDay,
-      focusedDay: today,
+      focusedDay: today.value,
       calendarFormat: calendarFormat.value,
-      startingDayOfWeek: StartingDayOfWeek.monday,
+      startingDayOfWeek: StartingDayOfWeek.sunday,
+      daysOfWeekStyle:
+          const DaysOfWeekStyle(weekendStyle: TextStyle(color: Colors.red)),
       calendarStyle: const CalendarStyle(
-        outsideDaysVisible: false,
+        weekendTextStyle: TextStyle(color: Colors.red),
+        outsideDaysVisible: true,
         markerSizeScale: 0.15,
         markersMaxCount: 1,
       ),
-      selectedDayPredicate: (day) {
-        return isSameDay(selectToDoDate.value.selectedDate, day);
-      },
-      onDaySelected: (selectedDate, today) {
-        if (!isSameDay(selectToDoDate.value.selectedDate, selectedDate)) {
-          selectToDoDate.value =
-              selectToDoDate.value.copyWith(selectedDate: selectedDate);
-          onSelectDate(selectToDoDate.value);
+      eventLoader: (day) {
+        if (isTodoExist) {
+          return ['hi'];
         }
+        return [];
+      },
+      selectedDayPredicate: (day) {
+        return isSameDay(selectedDate.value, day);
+      },
+      onDaySelected: (selectedDay, focusedDay) {
+        selectedDate.value = selectedDay;
+
+        onClickDate(selectedDay);
       },
       onFormatChanged: (format) {
         if (calendarFormat.value != format) {
           calendarFormat.value = format;
         }
+      },
+      onPageChanged: (focus) {
+        today.value = focus;
       },
       headerStyle: const HeaderStyle(
         titleCentered: true,
