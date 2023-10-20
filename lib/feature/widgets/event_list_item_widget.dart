@@ -34,7 +34,7 @@ class EventListItemWidget extends HookWidget {
       child: ListTile(
         title: GestureDetector(
             onTap: () {
-              //TODO bottom modal 띄우기
+              print('item title 클릭');
             },
             child: Text(todo.title)),
         trailing: GestureDetector(

@@ -8,19 +8,34 @@ import 'dart:math' as math;
 typedef OnClickSubmit = Function(ToDoPlan);
 
 class TodoBottomModalWidget extends HookWidget {
-  final ToDoPlan toDoPlan;
   const TodoBottomModalWidget(
-      {required this.onClickSubmit,
+      {
+      //required this.onClickSubmit,
       required this.toDoPlan,
       required this.title,
       super.key});
+  final ToDoPlan toDoPlan;
   final String title;
-  final OnClickSubmit onClickSubmit;
+  //final OnClickSubmit onClickSubmit;
 
   int getMaxId(List<Todo> todos) {
     if (todos.isEmpty) return 0;
     return todos.map((todo) => todo.id).reduce(math.max);
   }
+  //외부에서 부를 수 있도록 static으로 선언하고
+  //받아야하는게 TodoPlan.list.todo를 가져와야하니까
+
+  static PersistentBottomSheetController<Todo> show(
+    BuildContext context, {
+    required ToDoPlan todos,
+    String? updatedTitle,
+  }) =>
+      showBottomSheet<Todo>(
+          context: context,
+          builder: (context) => TodoBottomModalWidget(
+              toDoPlan: todos, title: updatedTitle ?? ''));
+  static void close(BuildContext context, ToDoPlan toDoPlan) =>
+      Navigator.of(context).pop(toDoPlan);
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +70,7 @@ class TodoBottomModalWidget extends HookWidget {
               ),
               suffixIcon: GestureDetector(
                 onTap: () {
+                  //추가일 경우
                   final newId = getMaxId(toDoPlan.list) + 1;
                   final updateToDoPlan = toDoPlan.copyWith(list: [
                     ...toDoPlan.list,

@@ -16,7 +16,6 @@ class EventFloatingWidget extends HookWidget {
 
   void onClickEventEdit() {}
 
-
   @override
   Widget build(BuildContext context) {
     void onClickShowTextModal() async {
@@ -27,9 +26,6 @@ class EventFloatingWidget extends HookWidget {
         builder: (context) => TodoBottomModalWidget(
           title: 'Todo추가하기',
           toDoPlan: toDoPlan,
-          onClickSubmit: (updatedPlan) {
-            Navigator.of(context).pop(updatedPlan);
-          },
         ),
       );
 
@@ -45,7 +41,6 @@ class EventFloatingWidget extends HookWidget {
             icon: Icons.edit_outlined,
             onClickEventButton: onClickShowTextModal),
         PlgMargins.v16,
-        
       ],
     );
   }
