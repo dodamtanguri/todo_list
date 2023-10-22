@@ -11,7 +11,7 @@ class CalendarWidget extends HookWidget {
 
   final OnClickDate onClickDate;
   final DateTime? todoDate;
-  final bool isTodoExist;
+  final List<DateTime> isTodoExist;
 
   DateTime setToMidnight(DateTime dateTime) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
@@ -41,7 +41,7 @@ class CalendarWidget extends HookWidget {
         markersMaxCount: 1,
       ),
       eventLoader: (day) {
-        if (isTodoExist) {
+        if (isTodoExist.contains(day)) {
           return ['hi'];
         }
         return [];
@@ -51,7 +51,6 @@ class CalendarWidget extends HookWidget {
       },
       onDaySelected: (selectedDay, focusedDay) {
         selectedDate.value = selectedDay;
-
         onClickDate(selectedDay);
       },
       onFormatChanged: (format) {

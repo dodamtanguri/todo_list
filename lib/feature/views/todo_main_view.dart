@@ -51,10 +51,11 @@ class ToDoMainView extends HookWidget {
           children: [
             //1.캘린더 위젯
             CalendarWidget(
-                (todoDate) => todoPlan.value =
-                    todoPlan.value.copyWith(selectedDate: todoDate),
-                todoDate: todoPlan.value.selectedDate,
-                isTodoExist: todoPlan.value.list.isNotEmpty),
+              (todoDate) => todoPlan.value =
+                  todoPlan.value.copyWith(selectedDate: todoDate),
+              todoDate: todoPlan.value.selectedDate,
+              isTodoExist: todoPlan.value.list.map((e) => e.actionDate).toList(),
+            ),
             //2. 이벤트 리스트 위젯
             Expanded(
               child: EventListWidget(
