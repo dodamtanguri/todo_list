@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/feature/models/todo.dart';
-
-import 'package:todo_list/feature/widgets/event_list_item_widget.dart';
+import 'package:todo_list/feature/widgets/todo_list_item_widget.dart';
 
 typedef OnTodoUpdated = Function(Todo);
 typedef OnDelete = Function(int index);
 
-class EventListWidget extends StatelessWidget {
+class ToDoListWidget extends StatelessWidget {
   final List<Todo> todos;
   final OnTodoUpdated onTodoUpdated;
   final OnDelete onDelete; // 삭제 콜백 추가
-  const EventListWidget({
+  const ToDoListWidget({
     super.key,
     required this.todos,
     required this.onTodoUpdated,
@@ -19,11 +18,10 @@ class EventListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ListView.builder(
       itemCount: todos.length,
       itemBuilder: (context, index) {
-        return EventListItemWidget(
+        return ToDoListItemWidget(
           todo: todos[index],
           onTodoUpdated: (updatedTodo) {
             onTodoUpdated(updatedTodo);

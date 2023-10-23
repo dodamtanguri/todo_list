@@ -3,10 +3,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
-import 'package:todo_list/feature/widgets/app_bar_widget.dart';
+import 'package:todo_list/feature/widgets/commons/app_bar_widget.dart';
 import 'package:todo_list/feature/widgets/calendar_widget.dart';
-import 'package:todo_list/feature/widgets/event_floating_widget.dart';
-import 'package:todo_list/feature/widgets/event_list_widget.dart';
+import 'package:todo_list/feature/widgets/todo_floating_widget.dart';
+import 'package:todo_list/feature/widgets/todo_list_widget.dart';
 
 class ToDoMainView extends HookWidget {
   const ToDoMainView({super.key});
@@ -54,11 +54,12 @@ class ToDoMainView extends HookWidget {
               (todoDate) => todoPlan.value =
                   todoPlan.value.copyWith(selectedDate: todoDate),
               todoDate: todoPlan.value.selectedDate,
-              isTodoExist: todoPlan.value.list.map((e) => e.actionDate).toList(),
+              isTodoExist:
+                  todoPlan.value.list.map((todo) => todo.actionDate).toList(),
             ),
             //2. 이벤트 리스트 위젯
             Expanded(
-              child: EventListWidget(
+              child: ToDoListWidget(
                 todos: todoPlan.value.list
                     .where((element) => isSelectedTodoTest(element))
                     .toList(),
@@ -69,11 +70,8 @@ class ToDoMainView extends HookWidget {
           ],
         ),
       ),
-      floatingActionButton: EventFloatingWidget(
+      floatingActionButton: TodoFloatingButton(
         toDoPlan: todoPlan.value,
-        onPassToDoPlanList: (value) {
-          todoPlan.value = value;
-        },
       ),
     );
   }

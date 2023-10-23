@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo.dart';
+import 'package:todo_list/feature/widgets/commons/bottom_modal_widget_2.dart';
 import 'package:todo_list/feature/widgets/commons/dialog_widget.dart';
-
 
 typedef OnTodoUpdated = Function(Todo);
 typedef OnDelete = Function(int todoId);
 
-class EventListItemWidget extends HookWidget {
+class ToDoListItemWidget extends HookWidget {
   final Todo todo;
   final OnTodoUpdated onTodoUpdated;
   final OnDelete onDelete;
-  const EventListItemWidget({
+  const ToDoListItemWidget({
     super.key,
     required this.todo,
     required this.onTodoUpdated,
@@ -34,8 +34,10 @@ class EventListItemWidget extends HookWidget {
       ),
       child: ListTile(
         title: GestureDetector(
-            onTap: () {
-              //TODO bottom modal 띄우기
+            onTap: () async {
+              Todo? result = await BottomModalWidget2.show(context,
+                  type: BottomType.modifiy);
+                  print('수정 todo result : $result');
             },
             child: Text(todo.title)),
         trailing: GestureDetector(
