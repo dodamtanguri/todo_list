@@ -18,6 +18,7 @@ class ToDoListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('ToDoListWidget');
     return ListView.builder(
       itemCount: todos.length,
       itemBuilder: (context, index) {

@@ -9,6 +9,7 @@ class AppBarWidget extends HookWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('AppBarWidget');
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,

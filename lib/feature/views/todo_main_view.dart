@@ -5,8 +5,9 @@ import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
 import 'package:todo_list/feature/widgets/commons/app_bar_widget.dart';
 import 'package:todo_list/feature/widgets/calendar_widget.dart';
-import 'package:todo_list/feature/widgets/todo_floating_widget.dart';
+import 'package:todo_list/feature/widgets/commons/input_bottom_sheet_widget.dart';
 import 'package:todo_list/feature/widgets/todo_list_widget.dart';
+import 'package:uuid/uuid.dart';
 
 class ToDoMainView extends HookWidget {
   const ToDoMainView({super.key});
@@ -43,39 +44,59 @@ class ToDoMainView extends HookWidget {
     }
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: const AppBarWidget(title: 'TODOLISTAPP'),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: PlgSizes.m20),
-        child: Column(
-          children: [
-            //1.캘린더 위젯
-            CalendarWidget(
-              (todoDate) => todoPlan.value =
-                  todoPlan.value.copyWith(selectedDate: todoDate),
-              todoDate: todoPlan.value.selectedDate,
-              isTodoExist:
-                  todoPlan.value.list.map((todo) => todo.actionDate).toList(),
-            ),
-            //2. 이벤트 리스트 위젯
-            Expanded(
-              child: ToDoListWidget(
-                todos: todoPlan.value.list
-                    .where((element) => isSelectedTodoTest(element))
-                    .toList(),
-                onTodoUpdated: (updatedTodo) => handleTodoUpdate(updatedTodo),
-                onDelete: (todoId) => handleToDoDelete(todoId),
+        backgroundColor: Colors.white,
+        appBar: const AppBarWidget(title: 'TODOLISTAPP'),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: PlgSizes.m20),
+          child: Column(
+            children: [
+              //1.캘린더 위젯
+              CalendarWidget(
+                (selectedDate) => todoPlan.value =
+                    todoPlan.value.copyWith(selectedDate: selectedDate),
+                todoDate: todoPlan.value.selectedDate,
+                isExistTodoDates:
+                    todoPlan.value.list.map((todo) => todo.actionDate).toList(),
               ),
-            ),
-          ],
+              //2. 이벤트 리스트 위젯
+              Expanded(
+                child: ToDoListWidget(
+                  todos: todoPlan.value.list
+                      .where((element) => isSelectedTodoTest(element))
+                      .toList(),
+                  onTodoUpdated: (updatedTodo) => handleTodoUpdate(updatedTodo),
+                  onDelete: (todoId) => handleToDoDelete(todoId),
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: TodoFloatingButton(
-          selectedDate: todoPlan.value.selectedDate,
-          onClickSubmit: (todo) {
-            todoPlan.value =
-                todoPlan.value.copyWith(list: [...todoPlan.value.list, todo]);
-          }),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            if (todoPlan.value.selectedDate == null) {
+              //날짜가선택되지 않았습니다.
+              return;
+            }
+            String? title = await InputBottomSheetWidget.show(
+              context,
+            );
+            if (title == null || title.isEmpty) {
+              //할일이 입력되지 않았습니다.  X
+              return;
+            }
+            todoPlan.value = todoPlan.value.copyWith(list: [
+              ...todoPlan.value.list,
+              Todo(
+                  id: const Uuid().v1(),
+                  actionDate: todoPlan.value.selectedDate!,
+                  title: title)
+            ]);
+          },
+          backgroundColor: Colors.white,
+          child: const Icon(
+            Icons.edit_outlined,
+            color: Colors.black,
+          ),
+        ));
   }
 }

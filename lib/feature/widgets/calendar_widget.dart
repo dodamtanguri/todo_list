@@ -3,15 +3,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:todo_list/feature/utils/utils.dart';
 
-typedef OnClickDate = Function(DateTime updatedTodo);
+typedef OnClickDate = Function(DateTime selectedDate);
 
 class CalendarWidget extends HookWidget {
   const CalendarWidget(this.onClickDate,
-      {required this.todoDate, required this.isTodoExist, super.key});
+      {required this.todoDate, required this.isExistTodoDates, super.key});
 
   final OnClickDate onClickDate;
   final DateTime? todoDate;
-  final List<DateTime> isTodoExist;
+  final List<DateTime> isExistTodoDates;
 
   DateTime setToMidnight(DateTime dateTime) {
     return DateTime(dateTime.year, dateTime.month, dateTime.day, 0, 0, 0);
@@ -19,6 +19,8 @@ class CalendarWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('calendarWidget');
+
     final selectedDate = useState(todoDate);
 
     final calendarFormat = useState(CalendarFormat.month);
@@ -41,7 +43,7 @@ class CalendarWidget extends HookWidget {
         markersMaxCount: 1,
       ),
       eventLoader: (day) {
-        if (isTodoExist.contains(day)) {
+        if (isExistTodoDates.contains(day)) {
           return ['hi'];
         }
         return [];

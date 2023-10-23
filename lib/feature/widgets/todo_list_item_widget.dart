@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo.dart';
-import 'package:todo_list/feature/widgets/commons/bottom_modal_widget_2.dart';
-import 'package:todo_list/feature/widgets/commons/dialog_widget.dart';
+import 'package:todo_list/feature/widgets/commons/input_bottom_sheet_widget.dart';
+import 'package:todo_list/feature/widgets/commons/message_box_widget.dart';
+
 
 typedef OnTodoUpdated = Function(Todo);
 typedef OnDelete = Function(String todoId);
@@ -20,6 +21,7 @@ class ToDoListItemWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('ToDoListItemWidget');
     return Dismissible(
       key: ValueKey(todo.id),
       direction: DismissDirection.endToStart,
@@ -35,18 +37,14 @@ class ToDoListItemWidget extends HookWidget {
       child: ListTile(
         title: GestureDetector(
             onTap: () async {
-              Todo? result = await BottomModalWidget2.show(context,
-                  type: BottomType.modifiy);
-                print('수정 : $result');
-
-              Todo updatedTodo =
-                  todo.copyWith(title: result?.title ?? todo.title);
-              onTodoUpdated(updatedTodo);
+              String? title = await InputBottomSheetWidget.show(context,
+                  description: todo.title);
+              onTodoUpdated(todo.copyWith(title: title ?? todo.title));
             },
             child: Text(todo.title)),
         trailing: GestureDetector(
           onTap: () async {
-            DialogResult? result = await DialogWidget.show(context,
+            DialogResult? result = await MessageBoxWidget.show(context,
                 message: '변경하시겠습니까?',
                 positiveLabel: '완료',
                 negativeLabel: '미완료');

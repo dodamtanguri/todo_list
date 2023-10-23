@@ -13,8 +13,8 @@ enum DialogResult {
   final bool value;
 }
 
-class DialogWidget extends HookWidget {
-  const DialogWidget({
+class MessageBoxWidget extends HookWidget {
+  const MessageBoxWidget({
     super.key,
     required this.title,
     required this.message,
@@ -34,7 +34,7 @@ class DialogWidget extends HookWidget {
           String? negativeLabel}) async =>
       showDialog<DialogResult>(
           context: context,
-          builder: (context) => DialogWidget(
+          builder: (context) => MessageBoxWidget(
                 title: title ?? "알림",
                 message: message,
                 positiveLabel: positiveLabel ?? "확인",
@@ -46,6 +46,7 @@ class DialogWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('dialogwidget');
     return AlertDialog(
       title: Text(title),
       content: Text(message),

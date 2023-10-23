@@ -14,10 +14,6 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Todo _$TodoFromJson(Map<String, dynamic> json) {
-  return _Todo.fromJson(json);
-}
-
 /// @nodoc
 mixin _$Todo {
   String get id => throw _privateConstructorUsedError;
@@ -25,7 +21,6 @@ mixin _$Todo {
   String get title => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $TodoCopyWith<Todo> get copyWith => throw _privateConstructorUsedError;
 }
@@ -124,16 +119,13 @@ class __$$TodoImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$TodoImpl implements _Todo {
   const _$TodoImpl(
       {required this.id,
       required this.actionDate,
       required this.title,
       this.isCompleted = false});
-
-  factory _$TodoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$TodoImplFromJson(json);
 
   @override
   final String id;
@@ -163,7 +155,6 @@ class _$TodoImpl implements _Todo {
                 other.isCompleted == isCompleted));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, actionDate, title, isCompleted);
@@ -173,13 +164,6 @@ class _$TodoImpl implements _Todo {
   @pragma('vm:prefer-inline')
   _$$TodoImplCopyWith<_$TodoImpl> get copyWith =>
       __$$TodoImplCopyWithImpl<_$TodoImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$TodoImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _Todo implements Todo {
@@ -188,8 +172,6 @@ abstract class _Todo implements Todo {
       required final DateTime actionDate,
       required final String title,
       final bool isCompleted}) = _$TodoImpl;
-
-  factory _Todo.fromJson(Map<String, dynamic> json) = _$TodoImpl.fromJson;
 
   @override
   String get id;

@@ -14,17 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ToDoPlan _$ToDoPlanFromJson(Map<String, dynamic> json) {
-  return _ToDoPlan.fromJson(json);
-}
-
 /// @nodoc
 mixin _$ToDoPlan {
   DateTime? get selectedDate =>
       throw _privateConstructorUsedError; //todos 로 이름 변경
   List<Todo> get list => throw _privateConstructorUsedError;
 
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ToDoPlanCopyWith<ToDoPlan> get copyWith =>
       throw _privateConstructorUsedError;
@@ -106,14 +101,11 @@ class __$$ToDoPlanImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$ToDoPlanImpl implements _ToDoPlan {
   const _$ToDoPlanImpl(
       {required this.selectedDate, final List<Todo> list = const []})
       : _list = list;
-
-  factory _$ToDoPlanImpl.fromJson(Map<String, dynamic> json) =>
-      _$$ToDoPlanImplFromJson(json);
 
   @override
   final DateTime? selectedDate;
@@ -143,7 +135,6 @@ class _$ToDoPlanImpl implements _ToDoPlan {
             const DeepCollectionEquality().equals(other._list, _list));
   }
 
-  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType, selectedDate, const DeepCollectionEquality().hash(_list));
@@ -153,22 +144,12 @@ class _$ToDoPlanImpl implements _ToDoPlan {
   @pragma('vm:prefer-inline')
   _$$ToDoPlanImplCopyWith<_$ToDoPlanImpl> get copyWith =>
       __$$ToDoPlanImplCopyWithImpl<_$ToDoPlanImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$ToDoPlanImplToJson(
-      this,
-    );
-  }
 }
 
 abstract class _ToDoPlan implements ToDoPlan {
   const factory _ToDoPlan(
       {required final DateTime? selectedDate,
       final List<Todo> list}) = _$ToDoPlanImpl;
-
-  factory _ToDoPlan.fromJson(Map<String, dynamic> json) =
-      _$ToDoPlanImpl.fromJson;
 
   @override
   DateTime? get selectedDate;
