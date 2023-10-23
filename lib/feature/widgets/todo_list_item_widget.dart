@@ -5,7 +5,7 @@ import 'package:todo_list/feature/widgets/commons/bottom_modal_widget_2.dart';
 import 'package:todo_list/feature/widgets/commons/dialog_widget.dart';
 
 typedef OnTodoUpdated = Function(Todo);
-typedef OnDelete = Function(int todoId);
+typedef OnDelete = Function(String todoId);
 
 class ToDoListItemWidget extends HookWidget {
   final Todo todo;
@@ -37,7 +37,11 @@ class ToDoListItemWidget extends HookWidget {
             onTap: () async {
               Todo? result = await BottomModalWidget2.show(context,
                   type: BottomType.modifiy);
-                  print('수정 todo result : $result');
+                print('수정 : $result');
+
+              Todo updatedTodo =
+                  todo.copyWith(title: result?.title ?? todo.title);
+              onTodoUpdated(updatedTodo);
             },
             child: Text(todo.title)),
         trailing: GestureDetector(

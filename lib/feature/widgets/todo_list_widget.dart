@@ -3,7 +3,7 @@ import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/widgets/todo_list_item_widget.dart';
 
 typedef OnTodoUpdated = Function(Todo);
-typedef OnDelete = Function(int index);
+typedef OnDelete = Function(String index);
 
 class ToDoListWidget extends StatelessWidget {
   final List<Todo> todos;

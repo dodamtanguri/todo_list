@@ -17,7 +17,7 @@ class ToDoMainView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final todoPlan = useState<ToDoPlan>(const ToDoPlan(selectedDate: null));
+    final todoPlan = useState<ToDoPlan>(ToDoPlan(selectedDate: DateTime.now()));
 
     bool isSelectedTodoTest(Todo todo) {
       if (todoPlan.value.selectedDate == null) return false;
@@ -36,7 +36,7 @@ class ToDoMainView extends HookWidget {
       todoPlan.value = todoPlan.value.copyWith(list: updatedList);
     }
 
-    void handleToDoDelete(int todoId) {
+    void handleToDoDelete(String todoId) {
       final updatedList = List<Todo>.from(todoPlan.value.list);
       updatedList.removeWhere((todo) => todo.id == todoId);
       todoPlan.value = todoPlan.value.copyWith(list: updatedList);
@@ -71,8 +71,11 @@ class ToDoMainView extends HookWidget {
         ),
       ),
       floatingActionButton: TodoFloatingButton(
-        toDoPlan: todoPlan.value,
-      ),
+          selectedDate: todoPlan.value.selectedDate,
+          onClickSubmit: (todo) {
+            todoPlan.value =
+                todoPlan.value.copyWith(list: [...todoPlan.value.list, todo]);
+          }),
     );
   }
 }
