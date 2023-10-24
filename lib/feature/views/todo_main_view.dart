@@ -27,20 +27,32 @@ class ToDoMainView extends HookWidget {
           todo.actionDate!.day == todoPlan.value.selectedDate?.day;
     }
 
+    // void handleTodoUpdate(Todo todo, int index) {
+    //   Todo selectedTodo = todoPlan.value.list[index];
+    //   todoPlan.value = todoPlan.value.copyWith(
+    //       list: todoPlan.value.list
+    //           .map((element) => selectedTodo.id == element.id ? todo : element)
+    //           .toList());
+    // }
+
     void handleTodoUpdate(Todo todo, int index) {
-      Todo selectedTodo = todoPlan.value.list[index];
-      todoPlan.value = todoPlan.value.copyWith(
-          list: todoPlan.value.list
-              .map((element) => selectedTodo.id == element.id ? todo : element)
-              .toList());
+      final updatedList = List<Todo>.from(todoPlan.value.list);
+      updatedList[index] = todo;
+      todoPlan.value = todoPlan.value.copyWith(list: updatedList);
     }
 
+    // void handleToDoDelete(int index) {
+    //   Todo selectedTodo = todoPlan.value.list[index];
+    //   todoPlan.value = todoPlan.value.copyWith(
+    //       list: todoPlan.value.list
+    //           .where((element) => selectedTodo.id != element.id)
+    //           .toList());
+    // }
+
     void handleToDoDelete(int index) {
-      Todo selectedTodo = todoPlan.value.list[index];
-      todoPlan.value = todoPlan.value.copyWith(
-          list: todoPlan.value.list
-              .where((element) => selectedTodo.id != element.id)
-              .toList());
+      final updatedList = List<Todo>.from(todoPlan.value.list);
+      updatedList.removeAt(index);
+      todoPlan.value = todoPlan.value.copyWith(list: updatedList);
     }
 
     return Scaffold(
