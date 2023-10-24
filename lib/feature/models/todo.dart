@@ -5,9 +5,9 @@ part 'todo.freezed.dart';
 @freezed
 class Todo with _$Todo {
   const factory Todo({
-    required String id,
-    required DateTime actionDate,
-    required String title,
+     String? id,
+     DateTime? actionDate,
+     String? title,
     @Default(false) bool isCompleted,
   }) = _Todo;
   

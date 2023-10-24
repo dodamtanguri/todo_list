@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/widgets/todo_list_item_widget.dart';
 
-typedef OnTodoUpdated = Function(String title, String todoId);
-typedef OnTodoDeleted = Function(String index);
-typedef OnTodoStatusChanged = Function(bool result, String todoId);
-
-class ToDoListWidget extends StatelessWidget {
+class ToDoListWidget extends HookWidget {
   final List<Todo> todos;
   final OnTodoUpdated onTodoUpdated;
   final OnTodoDeleted onTodoDeleted;
-  final OnTodoStatusChanged onTodoStatusChanged;
+
   const ToDoListWidget({
     super.key,
     required this.todos,
     required this.onTodoUpdated,
     required this.onTodoDeleted,
-    required this.onTodoStatusChanged,
   });
 
   @override
@@ -26,10 +22,10 @@ class ToDoListWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         return ToDoListItemWidget(
           todo: todos[index],
-          onTodoUpdated: (title, id) => onTodoUpdated(title, id),
-          onTodoDeleted: (todoId) => onTodoDeleted(todoId),
-          onTodoStatusChanged: (result, todoId) =>
-              onTodoStatusChanged(result, todoId),
+          index: index,
+          onTodoUpdated: (todo, index) => onTodoUpdated(todo, index),
+          onTodoDeleted: (index) => onTodoDeleted(index),
+
         );
       },
     );

@@ -6,7 +6,6 @@ import 'package:todo_list/feature/ui/styles/sizes.dart';
 import 'package:todo_list/feature/widgets/commons/app_bar_widget.dart';
 import 'package:todo_list/feature/widgets/calendar_widget.dart';
 import 'package:todo_list/feature/widgets/commons/input_bottom_sheet_widget.dart';
-import 'package:todo_list/feature/widgets/commons/message_box_widget.dart';
 import 'package:todo_list/feature/widgets/todo_list_widget.dart';
 import 'package:uuid/uuid.dart';
 
@@ -23,36 +22,25 @@ class ToDoMainView extends HookWidget {
 
     bool isSelectedTodoTest(Todo todo) {
       if (todoPlan.value.selectedDate == null) return false;
-      return todo.actionDate.year == todoPlan.value.selectedDate?.year &&
-          todo.actionDate.month == todoPlan.value.selectedDate?.month &&
-          todo.actionDate.day == todoPlan.value.selectedDate?.day;
+      return todo.actionDate!.year == todoPlan.value.selectedDate?.year &&
+          todo.actionDate!.month == todoPlan.value.selectedDate?.month &&
+          todo.actionDate!.day == todoPlan.value.selectedDate?.day;
     }
 
-    void handleTodoUpdate(String description, String todoId) {
-      final todoList = List<Todo>.from(
-          todoPlan.value.list.where((element) => isSelectedTodoTest(element)));
-      int index = todoList.indexWhere((targetTodo) => targetTodo.id == todoId);
-      if (index != -1) {
-        todoList[index] = todoList[index].copyWith(title: description);
-      }
-      todoPlan.value = todoPlan.value.copyWith(list: todoList);
+    void handleTodoUpdate(Todo todo, int index) {
+      Todo selectedTodo = todoPlan.value.list[index];
+      todoPlan.value = todoPlan.value.copyWith(
+          list: todoPlan.value.list
+              .map((element) => selectedTodo.id == element.id ? todo : element)
+              .toList());
     }
 
-    void handleToDoDelete(String todoId) {
-      final todoList = List<Todo>.from(
-          todoPlan.value.list.where((element) => isSelectedTodoTest(element)));
-      todoList.removeWhere((targetTodo) => targetTodo.id == todoId);
-      todoPlan.value = todoPlan.value.copyWith(list: todoList);
-    }
-
-    void handleTodoStatus(bool result, String todoId) {
-      final todoList = List<Todo>.from(
-          todoPlan.value.list.where((element) => isSelectedTodoTest(element)));
-      int index = todoList.indexWhere((targetTodo) => targetTodo.id == todoId);
-      if (index != -1) {
-        todoList[index] = todoList[index].copyWith(isCompleted: result);
-      }
-      todoPlan.value = todoPlan.value.copyWith(list: todoList);
+    void handleToDoDelete(int index) {
+      Todo selectedTodo = todoPlan.value.list[index];
+      todoPlan.value = todoPlan.value.copyWith(
+          list: todoPlan.value.list
+              .where((element) => selectedTodo.id != element.id)
+              .toList());
     }
 
     return Scaffold(
@@ -67,8 +55,9 @@ class ToDoMainView extends HookWidget {
                 (selectedDate) => todoPlan.value =
                     todoPlan.value.copyWith(selectedDate: selectedDate),
                 todoDate: todoPlan.value.selectedDate,
-                isExistTodoDates:
-                    todoPlan.value.list.map((todo) => todo.actionDate).toList(),
+                isExistTodoDates: todoPlan.value.list
+                    .map((todo) => todo.actionDate!)
+                    .toList(),
               ),
               //2. 이벤트 리스트 위젯
               Expanded(
@@ -76,20 +65,8 @@ class ToDoMainView extends HookWidget {
                   todos: todoPlan.value.list
                       .where((element) => isSelectedTodoTest(element))
                       .toList(),
-                  onTodoUpdated: (description, id) async {
-                    String? title = await InputBottomSheetWidget.show(context,
-                        description: description);
-                    handleTodoUpdate(title ?? description, id);
-                  },
-                  onTodoDeleted: (todoId) => handleToDoDelete(todoId),
-                  onTodoStatusChanged: (result, id) async {
-                    DialogResult? dialogResult = await MessageBoxWidget.show(
-                        context,
-                        message: '변경하시겠습니까?',
-                        positiveLabel: '완료',
-                        negativeLabel: '미완료');
-                    handleTodoStatus(dialogResult?.value ?? result, id);
-                  },
+                  onTodoUpdated: (todo, index) => handleTodoUpdate(todo, index),
+                  onTodoDeleted: (index) => handleToDoDelete(index),
                 ),
               ),
             ],

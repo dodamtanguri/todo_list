@@ -16,9 +16,9 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$Todo {
-  String get id => throw _privateConstructorUsedError;
-  DateTime get actionDate => throw _privateConstructorUsedError;
-  String get title => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  DateTime? get actionDate => throw _privateConstructorUsedError;
+  String? get title => throw _privateConstructorUsedError;
   bool get isCompleted => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +30,8 @@ abstract class $TodoCopyWith<$Res> {
   factory $TodoCopyWith(Todo value, $Res Function(Todo) then) =
       _$TodoCopyWithImpl<$Res, Todo>;
   @useResult
-  $Res call({String id, DateTime actionDate, String title, bool isCompleted});
+  $Res call(
+      {String? id, DateTime? actionDate, String? title, bool isCompleted});
 }
 
 /// @nodoc
@@ -46,24 +47,24 @@ class _$TodoCopyWithImpl<$Res, $Val extends Todo>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? actionDate = null,
-    Object? title = null,
+    Object? id = freezed,
+    Object? actionDate = freezed,
+    Object? title = freezed,
     Object? isCompleted = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      actionDate: null == actionDate
+              as String?,
+      actionDate: freezed == actionDate
           ? _value.actionDate
           : actionDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      title: null == title
+              as DateTime?,
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
@@ -79,7 +80,8 @@ abstract class _$$TodoImplCopyWith<$Res> implements $TodoCopyWith<$Res> {
       __$$TodoImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, DateTime actionDate, String title, bool isCompleted});
+  $Res call(
+      {String? id, DateTime? actionDate, String? title, bool isCompleted});
 }
 
 /// @nodoc
@@ -92,24 +94,24 @@ class __$$TodoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? actionDate = null,
-    Object? title = null,
+    Object? id = freezed,
+    Object? actionDate = freezed,
+    Object? title = freezed,
     Object? isCompleted = null,
   }) {
     return _then(_$TodoImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      actionDate: null == actionDate
+              as String?,
+      actionDate: freezed == actionDate
           ? _value.actionDate
           : actionDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      title: null == title
+              as DateTime?,
+      title: freezed == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isCompleted: null == isCompleted
           ? _value.isCompleted
           : isCompleted // ignore: cast_nullable_to_non_nullable
@@ -122,17 +124,14 @@ class __$$TodoImplCopyWithImpl<$Res>
 
 class _$TodoImpl implements _Todo {
   const _$TodoImpl(
-      {required this.id,
-      required this.actionDate,
-      required this.title,
-      this.isCompleted = false});
+      {this.id, this.actionDate, this.title, this.isCompleted = false});
 
   @override
-  final String id;
+  final String? id;
   @override
-  final DateTime actionDate;
+  final DateTime? actionDate;
   @override
-  final String title;
+  final String? title;
   @override
   @JsonKey()
   final bool isCompleted;
@@ -168,17 +167,17 @@ class _$TodoImpl implements _Todo {
 
 abstract class _Todo implements Todo {
   const factory _Todo(
-      {required final String id,
-      required final DateTime actionDate,
-      required final String title,
+      {final String? id,
+      final DateTime? actionDate,
+      final String? title,
       final bool isCompleted}) = _$TodoImpl;
 
   @override
-  String get id;
+  String? get id;
   @override
-  DateTime get actionDate;
+  DateTime? get actionDate;
   @override
-  String get title;
+  String? get title;
   @override
   bool get isCompleted;
   @override

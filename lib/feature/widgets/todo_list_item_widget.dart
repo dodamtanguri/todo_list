@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:todo_list/feature/models/todo.dart';
+import 'package:todo_list/feature/widgets/commons/input_bottom_sheet_widget.dart';
+import 'package:todo_list/feature/widgets/commons/message_box_widget.dart';
 
-typedef OnTodoUpdated = Function(String description, String todoId);
-typedef OnTodoDeleted = Function(String todoId);
-typedef OnTodoStatusChanged = Function(bool result, String todoId);
+typedef OnTodoUpdated = Function(Todo todo, int index);
+typedef OnTodoDeleted = Function(int index);
 
 class ToDoListItemWidget extends HookWidget {
-  final Todo todo;
-  final OnTodoUpdated onTodoUpdated;
-  final OnTodoDeleted onTodoDeleted;
-  final OnTodoStatusChanged onTodoStatusChanged;
-  const ToDoListItemWidget({
+    const ToDoListItemWidget({
     super.key,
+    required this.index,
     required this.todo,
     required this.onTodoUpdated,
     required this.onTodoDeleted,
-    required this.onTodoStatusChanged,
   });
+
+  final Todo todo;
+  final int index;
+  final OnTodoUpdated onTodoUpdated;
+  final OnTodoDeleted onTodoDeleted;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class ToDoListItemWidget extends HookWidget {
       key: ValueKey(todo.id),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        onTodoDeleted(todo.id);
+        onTodoDeleted(index);
       },
       background: Container(
         color: Colors.red,
@@ -35,10 +37,29 @@ class ToDoListItemWidget extends HookWidget {
       ),
       child: ListTile(
         title: GestureDetector(
-            onTap: () => onTodoUpdated(todo.title, todo.id),
-            child: Text(todo.title)),
+            //onItemSelected
+            onTap: () async {
+              String? title = await InputBottomSheetWidget.show(context,
+                  description: todo.title);
+
+              if (title == null) {
+                return;
+              }
+              onTodoUpdated(todo.copyWith(title: title),index);
+            },
+            child: Text(todo.title!)),
         trailing: GestureDetector(
-          onTap: () => onTodoStatusChanged(todo.isCompleted, todo.id),
+          onTap: () async {
+            DialogResult? dialogResult = await MessageBoxWidget.show(context,
+                message: '변경하시겠습니까?',
+                positiveLabel: '완료',
+                negativeLabel: '미완료');
+
+            if (dialogResult == null) {
+              return;
+            }
+            onTodoUpdated(todo.copyWith(isCompleted: dialogResult.value,), index);
+          },
           child: Icon(
             todo.isCompleted ? Icons.circle_outlined : Icons.close,
             color: todo.isCompleted ? Colors.green : Colors.red,
