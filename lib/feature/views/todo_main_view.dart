@@ -6,6 +6,7 @@ import 'package:todo_list/feature/ui/styles/sizes.dart';
 import 'package:todo_list/feature/widgets/commons/app_bar_widget.dart';
 import 'package:todo_list/feature/widgets/calendar_widget.dart';
 import 'package:todo_list/feature/widgets/commons/input_bottom_sheet_widget.dart';
+import 'package:todo_list/feature/widgets/commons/message_box_widget.dart';
 import 'package:todo_list/feature/widgets/todo_list_widget.dart';
 import 'package:uuid/uuid.dart';
 
@@ -27,20 +28,31 @@ class ToDoMainView extends HookWidget {
           todo.actionDate.day == todoPlan.value.selectedDate?.day;
     }
 
-    //todo 상태 변경
-    void handleTodoUpdate(Todo updatedTodo) {
-      final updatedList = List<Todo>.from(todoPlan.value.list);
-      int todoId = updatedList.indexWhere((todo) => todo.id == updatedTodo.id);
-      if (todoId != -1) {
-        updatedList[todoId] = updatedTodo;
+    void handleTodoUpdate(String description, String todoId) {
+      final todoList = List<Todo>.from(
+          todoPlan.value.list.where((element) => isSelectedTodoTest(element)));
+      int index = todoList.indexWhere((targetTodo) => targetTodo.id == todoId);
+      if (index != -1) {
+        todoList[index] = todoList[index].copyWith(title: description);
       }
-      todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+      todoPlan.value = todoPlan.value.copyWith(list: todoList);
     }
 
     void handleToDoDelete(String todoId) {
-      final updatedList = List<Todo>.from(todoPlan.value.list);
-      updatedList.removeWhere((todo) => todo.id == todoId);
-      todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+      final todoList = List<Todo>.from(
+          todoPlan.value.list.where((element) => isSelectedTodoTest(element)));
+      todoList.removeWhere((targetTodo) => targetTodo.id == todoId);
+      todoPlan.value = todoPlan.value.copyWith(list: todoList);
+    }
+
+    void handleTodoStatus(bool result, String todoId) {
+      final todoList = List<Todo>.from(
+          todoPlan.value.list.where((element) => isSelectedTodoTest(element)));
+      int index = todoList.indexWhere((targetTodo) => targetTodo.id == todoId);
+      if (index != -1) {
+        todoList[index] = todoList[index].copyWith(isCompleted: result);
+      }
+      todoPlan.value = todoPlan.value.copyWith(list: todoList);
     }
 
     return Scaffold(
@@ -64,8 +76,20 @@ class ToDoMainView extends HookWidget {
                   todos: todoPlan.value.list
                       .where((element) => isSelectedTodoTest(element))
                       .toList(),
-                  onTodoUpdated: (updatedTodo) => handleTodoUpdate(updatedTodo),
-                  onDelete: (todoId) => handleToDoDelete(todoId),
+                  onTodoUpdated: (description, id) async {
+                    String? title = await InputBottomSheetWidget.show(context,
+                        description: description);
+                    handleTodoUpdate(title ?? description, id);
+                  },
+                  onTodoDeleted: (todoId) => handleToDoDelete(todoId),
+                  onTodoStatusChanged: (result, id) async {
+                    DialogResult? dialogResult = await MessageBoxWidget.show(
+                        context,
+                        message: '변경하시겠습니까?',
+                        positiveLabel: '완료',
+                        negativeLabel: '미완료');
+                    handleTodoStatus(dialogResult?.value ?? result, id);
+                  },
                 ),
               ),
             ],
