@@ -11,10 +11,8 @@ class ToDoStateNotifier extends StateNotifier<List<Todo>> {
       ...state,
       Todo(id: const Uuid().v1(), actionDate: selectedDate, title: description)
     ];
-    print('state : $state');
   }
 
-  // widget에 index 관련 내요ㅕㅇ이있으니까 이거 그냥 list[index] 해서 넘겨줄거 생각하기
   void edit(Todo todo, int index) {
     state = state.copyReplaceAt(index, todo);
   }
