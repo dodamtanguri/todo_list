@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:todo_list/feature/extensions/list_extension.dart';
 import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
@@ -36,9 +37,24 @@ class ToDoMainView extends HookWidget {
     // }
 
     void handleTodoUpdate(Todo todo, int index) {
-      final updatedList = List<Todo>.from(todoPlan.value.list);
-      updatedList[index] = todo;
-      todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+      // final updatedList = List<Todo>.from(todoPlan.value.list);
+      // updatedList[index] = todo;
+      // todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+
+      // todoPlan.value = todoPlan.value
+      //     .copyWith(list: todoPlan.value.list.copyReplaceAt<Todo>(index, todo));
+
+      // todoPlan.value = todoPlan.value.copyWith(
+      //     list: todoPlan.value.list
+      //         .copyReplaceWith<Todo>(todoPlan.value.list[index], todo));
+
+      final ToDoPlan(:list) = todoPlan.value;
+
+      // todoPlan.value = todoPlan.value
+      //     .copyWith(list: list.copyReplaceAll(list[index], todo));
+
+      todoPlan.value =
+          todoPlan.value.copyWith(list: list.copyReplaceAt(index, todo));
     }
 
     // void handleToDoDelete(int index) {
@@ -50,9 +66,16 @@ class ToDoMainView extends HookWidget {
     // }
 
     void handleToDoDelete(int index) {
-      final updatedList = List<Todo>.from(todoPlan.value.list);
-      updatedList.removeAt(index);
-      todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+      // final updatedList = List<Todo>.from(todoPlan.value.list);
+      // updatedList.removeAt(index);
+      // todoPlan.value = todoPlan.value.copyWith(list: updatedList);
+
+      // todoPlan.value = todoPlan.value
+      //     .copyWith(list: todoPlan.value.list.copyRemoveAt(index));
+      final ToDoPlan(:list) = todoPlan.value;
+      // todoPlan.value =
+      //     todoPlan.value.copyWith(list: list.copyRemoveAll(list[index]));
+      todoPlan.value = todoPlan.value.copyWith(list: list.copyRemoveAt(index));
     }
 
     return Scaffold(

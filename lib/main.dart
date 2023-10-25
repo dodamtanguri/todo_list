@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:todo_list/feature/views/todo_main_view.dart';
 
 void main() async {
   await initializeDateFormatting();
-  runApp(const TodoListApp());
+  // ProviderScope 등록 
+  runApp(const ProviderScope(
+    child: TodoListApp(),
+  ));
 }
 
 class TodoListApp extends StatelessWidget {
