@@ -23,6 +23,7 @@ class ToDoListItemWidget extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('######################ToDoListItemWidget HOOK #######################');
     return Dismissible(
       key: ValueKey(todo.id),
       direction: DismissDirection.endToStart,
