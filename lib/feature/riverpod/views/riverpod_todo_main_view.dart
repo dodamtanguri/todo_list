@@ -12,14 +12,23 @@ class RiverpodTodoMainView extends HookConsumerWidget {
   const RiverpodTodoMainView({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selecDate = useState<DateTime>(DateTime.now());
-    final todos = ref.watch(todosProvider);
-    print('RiverpodTodoMainView :&&&&&&&&&');
+    final selectedDate = useState<DateTime>(DateTime.now());
+    final todos = ref
+        .watch(todosProvider)
+        .where((todo) =>
+            todo.actionDate!.day == selectedDate.value.day &&
+            todo.actionDate!.month == selectedDate.value.month &&
+            todo.actionDate!.year == selectedDate.value.year)
+        .toList();
+
+        
+    // print('RiverpodTodoMainView :&&&&&&&&&');
     // useEffect(() {
+    //   print('현재 선택된 날짜  $selectedDate');
     //   print('-_-------> $todos');
     //   return null;
     // }, [todos]);
-
+    final actionTodo = ref.watch(todosProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const AppBarWidget(title: 'TODOLISTAPP'),
@@ -29,9 +38,10 @@ class RiverpodTodoMainView extends HookConsumerWidget {
           children: [
             //1.캘린더 위젯
             CalendarWidget(
-              (selectedDate) => selecDate.value = selectedDate,
-              todoDate: selecDate.value,
-              isExistTodoDates: todos.map((todo) => todo.actionDate!).toList(),
+              (selectDate) => selectedDate.value = selectDate,
+              todoDate: selectedDate.value,
+              isExistTodoDates:
+                  actionTodo.map((todo) => todo.actionDate!).toList(),
             ),
             //2. 이벤트 리스트 위젯
             Expanded(
@@ -39,8 +49,11 @@ class RiverpodTodoMainView extends HookConsumerWidget {
                 shrinkWrap: true,
                 itemCount: todos.length,
                 itemBuilder: (context, index) {
+                  // print('Index: $index, Todos length: ${todos.length}');
                   return ToDoListItemWidget(
-                    index: index,
+                    selectDate: selectedDate.value,
+                    todo: todos[index],
+                    todoIndex: index,
                   );
                 },
               ),
@@ -53,11 +66,9 @@ class RiverpodTodoMainView extends HookConsumerWidget {
           String? title = await InputBottomSheetWidget.show(
             context,
           );
-          if (title!.isEmpty) {
-            //할일이 입력되지 않았습니다.  X
-            return;
+          if (title != null) {
+            ref.read(todosProvider.notifier).add(title, selectedDate.value);
           }
-          ref.read(todosProvider.notifier).add(title, selecDate.value);
         },
         backgroundColor: Colors.white,
         child: const Icon(

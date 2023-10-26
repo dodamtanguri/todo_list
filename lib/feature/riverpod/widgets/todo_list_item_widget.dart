@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/riverpod/view_models/todo_view_model.dart';
 import 'package:todo_list/feature/widgets/commons/input_bottom_sheet_widget.dart';
 import 'package:todo_list/feature/widgets/commons/message_box_widget.dart';
 
 class ToDoListItemWidget extends HookConsumerWidget {
-  const ToDoListItemWidget({
-    super.key,
-    required this.index,
-  });
-  final int index;
+  const ToDoListItemWidget(
+      {super.key,
+      required this.todo,
+      required this.todoIndex,
+      required this.selectDate});
+  final Todo todo;
+  final int todoIndex;
+  final DateTime selectDate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todos = ref.watch(todosProvider);
-      print('ToDoListItemWidget :*************');
+    print('ToDoListItemWidget :*************');
+
+    // useEffect(() {
+    //   print('****************index 값 확인***************** $todoIndex');
+    //   print('-------------------- $todo');
+    //   return null;
+    // }, [todo]);
+
     return Dismissible(
-      key: ValueKey(index),
+      key: ValueKey(todo.id),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        ref.read(todosProvider.notifier).remove(index);
+        ref.read(todosProvider.notifier).remove(selectDate, todoIndex);
       },
       background: Container(
         color: Colors.red,
@@ -31,16 +41,15 @@ class ToDoListItemWidget extends HookConsumerWidget {
         title: GestureDetector(
           onTap: () async {
             String? title = await InputBottomSheetWidget.show(context,
-                description: todos[index].title);
-
+                description: todo.title);
             if (title == null) {
               return;
             }
             ref
                 .read(todosProvider.notifier)
-                .edit(todos[index].copyWith(title: title), index);
+                .edit(todo.copyWith(title: title), todoIndex, selectDate);
           },
-          child: Text(todos[index].title!),
+          child: Text(todo.title!),
         ),
         trailing: GestureDetector(
           onTap: () async {
@@ -54,11 +63,13 @@ class ToDoListItemWidget extends HookConsumerWidget {
             }
 
             ref.read(todosProvider.notifier).edit(
-                todos[index].copyWith(isCompleted: dialogResult.value), index);
+                todo.copyWith(isCompleted: dialogResult.value),
+                todoIndex,
+                selectDate);
           },
           child: Icon(
-            todos[index].isCompleted ? Icons.circle_outlined : Icons.close,
-            color: todos[index].isCompleted ? Colors.green : Colors.red,
+            todo.isCompleted ? Icons.circle_outlined : Icons.close,
+            color: todo.isCompleted ? Colors.green : Colors.red,
           ),
         ),
       ),
