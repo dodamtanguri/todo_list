@@ -13,21 +13,7 @@ class RiverpodTodoMainView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedDate = useState<DateTime>(DateTime.now());
-    final todos = ref
-        .watch(todosProvider)
-        .where((todo) =>
-            todo.actionDate!.day == selectedDate.value.day &&
-            todo.actionDate!.month == selectedDate.value.month &&
-            todo.actionDate!.year == selectedDate.value.year)
-        .toList();
-
-        
-    // print('RiverpodTodoMainView :&&&&&&&&&');
-    // useEffect(() {
-    //   print('현재 선택된 날짜  $selectedDate');
-    //   print('-_-------> $todos');
-    //   return null;
-    // }, [todos]);
+    final todos = ref.watch(todosProvider);
     final actionTodo = ref.watch(todosProvider);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -49,11 +35,9 @@ class RiverpodTodoMainView extends HookConsumerWidget {
                 shrinkWrap: true,
                 itemCount: todos.length,
                 itemBuilder: (context, index) {
-                  // print('Index: $index, Todos length: ${todos.length}');
                   return ToDoListItemWidget(
                     selectDate: selectedDate.value,
-                    todo: todos[index],
-                    todoIndex: index,
+                    index: index,
                   );
                 },
               ),

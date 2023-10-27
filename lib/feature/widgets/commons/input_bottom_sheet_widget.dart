@@ -49,7 +49,7 @@ class InputBottomSheetWidget extends HookWidget {
           child: TextFormField(
             onEditingComplete: () =>
                 close(context, todoController.text, isCreate),
-            autofocus: true,
+            // autofocus: true,
             controller: todoController,
             keyboardType: TextInputType.text,
             decoration: InputDecoration(
