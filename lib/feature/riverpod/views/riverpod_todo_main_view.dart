@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:todo_list/feature/riverpod/view_models/todo_view_model.dart';
 import 'package:todo_list/feature/riverpod/widgets/todo_list_item_widget.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
-import 'package:todo_list/feature/widgets/calendar_widget.dart';
+import 'package:todo_list/feature/widgets/commons/calendar_widget.dart';
 import 'package:todo_list/feature/widgets/commons/app_bar_widget.dart';
 import 'package:todo_list/feature/widgets/commons/input_bottom_sheet_widget.dart';
 
@@ -14,7 +14,7 @@ class RiverpodTodoMainView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedDate = useState<DateTime>(DateTime.now());
     final todos = ref.watch(todosProvider);
-    final actionTodo = ref.watch(todosProvider);
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const AppBarWidget(title: 'TODOLISTAPP'),
@@ -27,7 +27,7 @@ class RiverpodTodoMainView extends HookConsumerWidget {
               (selectDate) => selectedDate.value = selectDate,
               todoDate: selectedDate.value,
               isExistTodoDates:
-                  actionTodo.map((todo) => todo.actionDate!).toList(),
+                  todos.map((todo) => todo.actionDate!).toList(),
             ),
             //2. 이벤트 리스트 위젯
             Expanded(

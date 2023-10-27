@@ -5,7 +5,7 @@ import 'package:todo_list/feature/models/todo.dart';
 import 'package:todo_list/feature/models/todo_plan.dart';
 import 'package:todo_list/feature/ui/styles/sizes.dart';
 import 'package:todo_list/feature/widgets/commons/app_bar_widget.dart';
-import 'package:todo_list/feature/widgets/calendar_widget.dart';
+import 'package:todo_list/feature/widgets/commons/calendar_widget.dart';
 import 'package:todo_list/feature/widgets/commons/input_bottom_sheet_widget.dart';
 import 'package:todo_list/feature/widgets/todo_list_widget.dart';
 import 'package:uuid/uuid.dart';
@@ -25,7 +25,7 @@ class ToDoMainView extends HookWidget {
       if (todoPlan.value.selectedDate == null) return false;
       return todo.actionDate!.year == todoPlan.value.selectedDate?.year &&
           todo.actionDate!.month == todoPlan.value.selectedDate?.month &&
-          todo.actionDate!.day == todoPlan.value.selectedDate?.day;
+          todo.actionDate!.day == todoPlan.value.selectedDate?.day; 
     }
 
     // void handleTodoUpdate(Todo todo, int index) {
