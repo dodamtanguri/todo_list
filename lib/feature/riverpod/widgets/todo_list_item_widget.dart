@@ -16,6 +16,7 @@ class ToDoListItemWidget extends HookConsumerWidget {
     print('ToDoListItemWidget :*************');
     final selectTodo = ref.watch(todosProvider)[index];
     final filterdTodos = ref
+    
         .watch(todosProvider)
         .where((todo) =>
             todo.actionDate!.day == selectDate.day &&
