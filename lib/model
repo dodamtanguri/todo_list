@@ -1,0 +1,23 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:palrago/core/api/palrago/types/plg_yes_no.dart';
+
+part "setting_me_model.freezed.dart";
+
+@freezed
+class SettingMeModel with _$SettingMeModel {
+  const factory SettingMeModel({
+    @Default(false) bool isLoading,
+    String? name,
+    String? contacts,
+    String? email,
+    String? bankName,
+    String? accountNumber,
+    @Default(PlgYesNo.no) PlgYesNo isOpenName,
+    @Default(PlgYesNo.no) PlgYesNo isOpenContacts,
+    @Default(PlgYesNo.no) PlgYesNo isOpenEmail,
+    @Default(PlgYesNo.no) PlgYesNo isAuthPhone,
+    @Default(false) bool isAuthLimit,
+    @Default(PlgYesNo.no) PlgYesNo isAuthAccount,
+    @Default(PlgYesNo.no) PlgYesNo isAuthKaKao,
+  }) = _SettingMeModel;
+}

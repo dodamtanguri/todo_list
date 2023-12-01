@@ -1,0 +1,76 @@
+/// 내정보/인증 메뉴 관련 프로바이더
+/// 작성자 : sohee
+/// 특이사항 : N/A
+/// @copyright 한국선불카드(주)
+library;
+
+import 'package:palrago/core/api/palrago/setting/profile_my_info_api.dart';
+import 'package:palrago/core/api/palrago/setting/profile_open_name_api.dart';
+import 'package:palrago/core/api/palrago/types/plg_yes_no.dart';
+import 'package:palrago/core/extension/bool_extension.dart';
+import 'package:palrago/core/logger/logger.dart';
+import 'package:palrago/core/providers.dart';
+import 'package:palrago/features/setting/models/setting_me_model.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part "setting_me_view_model.g.dart";
+
+@riverpod
+class SettingMeViewModel extends _$SettingMeViewModel {
+  @override
+  SettingMeModel build() {
+    init().then((value) => state = value);
+    return const SettingMeModel();
+  }
+
+  //--------------------------------------------------------
+  // 내정보/인증 페이지 초기 진입
+  //--------------------------------------------------------
+  Future<SettingMeModel> init() async {
+    final client = ref.read(palragoRequestProvider);
+    final response = await ProfileMyInfoApi().execute(
+      client: client,
+      pathParams: const ProfileMyInfoParamsVo.path(unusedUserNo: 0),
+    );
+
+    final objData = response.data!.objData!;
+    DEBUG('[MyMenu][Setting][response][init]: ${objData.toString()}');
+    return Future<SettingMeModel>(
+      () => SettingMeModel(
+          isLoading: true,
+          name: objData.strUserName,
+          contacts: objData.strMPhoneNo,
+          email: objData.strEmail,
+          bankName: objData.strBankName,
+          accountNumber: objData.strBankAcctNo,
+          isOpenName: objData.strNameOpenFlag ?? PlgYesNo.no,
+          isOpenContacts: objData.strPhoneNoOpenFlag ?? PlgYesNo.no,
+          isOpenEmail: objData.strEmailOpenFlag ?? PlgYesNo.no,
+          isAuthPhone: objData.strOwnMPhoneAuthFlag ?? PlgYesNo.no,
+          isAuthLimit: objData.blnAmountAuth ?? false,
+          isAuthAccount: objData.strOwnAcctAuthFlag ?? PlgYesNo.no,
+          isAuthKaKao: objData.strKTAuthFlag ?? PlgYesNo.no),
+    );
+  }
+
+  Future<bool> switchOpenName(bool toggle) async {
+    final client = ref.read(palragoRequestProvider);
+
+    DEBUG('------------ 넘어온 toggle 값 확인 : $toggle ----------');
+
+    final response = await ProfileOpenNameApi().execute(
+      client: client,
+      pathParams: const ProfileOpenNameParamsVo.path(),
+      data: ProfileOpenNameRequestVo(strNameOpenFlag: toggle.toYN()),
+    );
+    final ret = response.isSuccess();
+    state = state.copyWith(isOpenName: toggle.toYN());
+    DEBUG('---확인 : ${state.isOpenName} ------');
+    return Future(() => ret);
+  }
+
+  void revertOpenName(bool revertToggle) {
+    DEBUG('++++++++++revert Open Name +++++++++++++');
+    state = state.copyWith(isOpenName: revertToggle.toYN());
+  }
+}

@@ -1,0 +1,90 @@
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:palrago/core/extension/context_extension.dart';
+import 'package:palrago/core/logger/logger.dart';
+import 'package:palrago/features/setting/view_models/setting_me_view_model.dart';
+import 'package:palrago/ui/styles/colors.dart';
+import 'package:palrago/ui/styles/margins.dart';
+import 'package:palrago/ui/styles/sizes.dart';
+import 'package:palrago/ui/styles/styles.dart';
+import 'package:palrago/ui/widgets/list/plg_setting_item_widget.dart';
+import 'package:palrago/ui/widgets/plg_widget_base.dart';
+
+class SettingMeInformationOpenWidget extends PalragoHookConsumerWidget {
+  const SettingMeInformationOpenWidget({
+    super.key,
+  });
+
+  onToggleChanged(tag, changed) {
+    DEBUG("toggle changed tag ---> [$tag]$changed");
+  }
+
+  onActionPressed(tag) {
+    DEBUG("action pressed tag ---> [$tag]");
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final settingMe = ref.watch(settingMeViewModelProvider);
+
+    //어느 스레드에 있는지 ...
+
+    return (settingMe.isLoading)
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                context.$S.userInformationOpen,
+                style: PlgStyles.h6Black_ff282828_20,
+              ),
+              PlgSettingItemWidget(
+                // ignore: prefer_const_constructors
+                key: ValueKey('PlgSettingItemWidget openName'),
+                onToggleChanged: (tag, toggle) async {
+                  final response = await ref
+                      .watch(settingMeViewModelProvider.notifier)
+                      .switchOpenName(toggle);
+                },
+
+                PlgSettingItemArgsVo(
+                    label: context.$S.openName,
+                    value: settingMe.name,
+                    type: PlgSettingItemType.toggle,
+                    firstWidth: PlgSizes.wh90,
+                    toggle: settingMe.isOpenName.toBool(settingMe.isOpenName)),
+              ),
+              PlgSettingItemWidget(
+                // ignore: prefer_const_constructors
+                key: ValueKey('PlgSettingItemWidget openContacts'),
+                onActionPressed: onActionPressed,
+                onToggleChanged: onToggleChanged,
+                PlgSettingItemArgsVo(
+                    label: context.$S.openContacts,
+                    value: settingMe.contacts,
+                    actionLabel: context.$S.change,
+                    type: PlgSettingItemType.toggle,
+                    firstWidth: PlgSizes.wh90,
+                    toggle: settingMe.isOpenContacts
+                        .toBool(settingMe.isOpenContacts)),
+              ),
+              PlgSettingItemWidget(
+                // ignore: prefer_const_constructors
+                key: ValueKey('PlgSettingItemWidget openEmail'),
+                onActionPressed: onActionPressed,
+                onToggleChanged: onToggleChanged,
+                PlgSettingItemArgsVo(
+                    label: context.$S.openEmail,
+                    actionLabel: context.$S.change,
+                    value: settingMe.email,
+                    type: PlgSettingItemType.toggle,
+                    firstWidth: PlgSizes.wh90),
+              ),
+              PlgMargins.v20,
+              const Divider(
+                  thickness: PlgSizes.wh8, color: PlgColor.surface_fff8f8f8),
+              PlgMargins.v20,
+            ],
+          )
+        : Container();
+  }
+}
